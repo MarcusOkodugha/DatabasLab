@@ -4,11 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29cf49d2-d410-47cd-96e9-acc5f247a89a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/databaslab1/hello-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/databaslab1/hello-view.fxml" afterDir="false" />
+    <list default="true" id="29cf49d2-d410-47cd-96e9-acc5f247a89a" name="Changes" comment="lets go">
+      <change afterPath="$PROJECT_DIR$/src/main/java/se/kth/anderslm/booksdb/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/se/kth/anderslm/booksdb/model/Book.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/se/kth/anderslm/booksdb/model/BooksDbException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/se/kth/anderslm/booksdb/model/BooksDbInterface.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/se/kth/anderslm/booksdb/model/BooksDbMockImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/se/kth/anderslm/booksdb/model/MarcusTest" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/se/kth/anderslm/booksdb/model/SearchMode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/se/kth/anderslm/booksdb/view/BooksPane.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/se/kth/anderslm/booksdb/view/Controller.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,7 +37,8 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false"
+    "WebServerToolWindowFactoryState": "false",
+    "nodejs_package_manager_path": "npm"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -48,8 +54,16 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1669820732518</updated>
-      <workItem from="1669820733799" duration="862000" />
+      <workItem from="1669820733799" duration="1220000" />
     </task>
+    <task id="LOCAL-00001" summary="lets go">
+      <created>1669821712566</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1669821712566</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -65,5 +79,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="lets go" />
+    <option name="LAST_COMMIT_MESSAGE" value="lets go" />
   </component>
 </project>

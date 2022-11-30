@@ -1,7 +1,5 @@
-package se.kth.anderslm.booksdb.model;
+package se.kth.databas.booksdb.model;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 /**

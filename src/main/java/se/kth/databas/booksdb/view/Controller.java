@@ -1,8 +1,8 @@
-package se.kth.anderslm.booksdb.view;
+package se.kth.databas.booksdb.view;
 
-import se.kth.anderslm.booksdb.model.Book;
-import se.kth.anderslm.booksdb.model.BooksDbInterface;
-import se.kth.anderslm.booksdb.model.SearchMode;
+import se.kth.databas.booksdb.model.Book;
+import se.kth.databas.booksdb.model.BooksDbInterface;
+import se.kth.databas.booksdb.model.SearchMode;
 
 import java.util.ArrayList;
 import java.util.List;

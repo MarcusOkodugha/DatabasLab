@@ -1,4 +1,4 @@
-package se.kth.anderslm.booksdb.view;
+package se.kth.databas.booksdb.view;
 
 import java.sql.Date;
 import java.util.List;
@@ -14,9 +14,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import se.kth.anderslm.booksdb.model.Book;
-import se.kth.anderslm.booksdb.model.BooksDbMockImpl;
-import se.kth.anderslm.booksdb.model.SearchMode;
+import se.kth.databas.booksdb.model.Book;
+import se.kth.databas.booksdb.model.BooksDbMockImpl;
+import se.kth.databas.booksdb.model.SearchMode;
 
 
 /**

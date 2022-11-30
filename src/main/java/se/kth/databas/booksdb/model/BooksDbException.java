@@ -1,4 +1,4 @@
-package se.kth.anderslm.booksdb.model;
+package se.kth.databas.booksdb.model;
 
 /**
  * Representing exceptions in the BooksDb model.

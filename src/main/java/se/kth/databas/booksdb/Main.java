@@ -1,11 +1,11 @@
-package se.kth.anderslm.booksdb;
+package se.kth.databas.booksdb;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import se.kth.anderslm.booksdb.model.BooksDbMockImpl;
-import se.kth.anderslm.booksdb.view.BooksPane;
+import se.kth.databas.booksdb.model.BooksDbMockImpl;
+import se.kth.databas.booksdb.view.BooksPane;
 
 /**
  * Application start up.

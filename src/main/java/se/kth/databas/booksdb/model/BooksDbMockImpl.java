@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package se.kth.anderslm.booksdb.model;
+package se.kth.databas.booksdb.model;
 
 import java.sql.Date;
 import java.util.ArrayList;

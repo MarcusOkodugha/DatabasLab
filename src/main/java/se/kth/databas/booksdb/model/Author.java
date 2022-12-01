@@ -1,16 +1,26 @@
 package se.kth.databas.booksdb.model;
 
+import java.util.ArrayList;
+
 public class Author {
     private int authorId;
     private String isbn;
     private String firstName;
     private String lastName;
+    private ArrayList<Book> books;
 
-    public Author(int authorId, String isbn, String firstName, String lastName) {
+    public Author(int authorId, String isbn, String firstName, String lastName, Book book) {
         this.authorId = authorId;
         this.isbn = isbn;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.books =  new ArrayList<>();
+        addBook(book);
+    }
+    public void addBook(Book book){
+        if (book!=null){
+            books.add(book);
+        }
     }
 
     public int getAuthorId() {

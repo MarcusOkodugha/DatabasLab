@@ -20,15 +20,24 @@ public class Book {
     // Add authors, as a separate class(!), and corresponding methods, to your implementation
     // as well, i.e. "private ArrayList<Author> authors;"
     private ArrayList<Author> authors;
-
-    
-    public Book(int bookId, String isbn, String title, Date published) {
+    public Book(int bookId, String isbn, String title, Date published, Author author) {
         this.bookId = bookId;
         this.isbn = isbn;
         this.title = title;
         this.published = published;
+        setValidISBN(isbn);
         authors = new ArrayList<>();
+        addAuthor(author);
     }
+
+    private void setValidISBN(String isbn){
+        if(isbn.length() == 13){
+            this.isbn = isbn;
+        }else {
+            throw new IllegalArgumentException("ISBN not 13 numbers");
+        }
+    }
+
     
     public Book(String isbn, String title, Date published) {
         this(-1, isbn, title, published); 

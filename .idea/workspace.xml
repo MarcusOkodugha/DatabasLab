@@ -4,13 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29cf49d2-d410-47cd-96e9-acc5f247a89a" name="Changes" comment="lets go">
+    <list default="true" id="29cf49d2-d410-47cd-96e9-acc5f247a89a" name="Changes" comment="refactoring &#10;com.company bortaget&#10;JDBCTest.java tillgat">
+      <change afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/mysql-connector-j-8.0.31.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/JDBCTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/JDBCTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="PUSH_TAGS">
@@ -36,7 +46,11 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "nodejs_package_manager_path": "npm"
+    "last_opened_file_path": "C:/JavaProgram/DatabasLab1/src/main/java/se/kth/databas/booksdb/mysql-connector-j-8.0.31.jar",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
   },
   "keyToStringList": {
     "DatabaseDriversLRU": [
@@ -45,14 +59,18 @@
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\JavaProgram\DatabasLab1\src\main\java\se\kth\databas\booksdb" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\JavaProgram\DatabasLab1\src\main\java" />
     </key>
   </component>
   <component name="RunManager">
     <configuration name="JDBCTest" type="Application" factoryName="Application" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="JDBCTest" />
+      <option name="MAIN_CLASS_NAME" value="se.kth.databas.booksdb.JDBCTest" />
       <module name="DatabasLab1" />
+      <option name="PROGRAM_PARAMETERS" value="root root" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -66,7 +84,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1669820732518</updated>
-      <workItem from="1669820733799" duration="3582000" />
+      <workItem from="1669820733799" duration="10695000" />
+      <workItem from="1669887052619" duration="5081000" />
     </task>
     <task id="LOCAL-00001" summary="lets go">
       <created>1669821712566</created>
@@ -82,7 +101,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669822247662</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="refactoring &#10;com.company bortaget&#10;JDBCTest.java tillgat">
+      <created>1669833036374</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1669833036374</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -101,6 +127,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="lets go" />
-    <option name="LAST_COMMIT_MESSAGE" value="lets go" />
+    <MESSAGE value="refactoring &#10;com.company bortaget&#10;JDBCTest.java tillgat" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactoring &#10;com.company bortaget&#10;JDBCTest.java tillgat" />
   </component>
 </project>

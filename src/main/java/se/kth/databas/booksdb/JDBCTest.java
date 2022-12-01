@@ -1,7 +1,5 @@
 package se.kth.databas.booksdb;
 
-import java.sql.*;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -20,6 +18,8 @@ public class JDBCTest {
 
         String user = args[0]; // user name
         String pwd = args[1]; // password
+        System.out.println("user "+user);
+        System.out.println("pwd "+pwd);
         System.out.println(user + ", *********");
         String database = "Company"; // the name of the specific database
         String server
@@ -29,8 +29,12 @@ public class JDBCTest {
         Connection con = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
+
+//            Class.forName(" Driver: MySQL Connector/J (ver. mysql-connector-java-8.0.25 (Revision: 08be9e9b4cba6aa115f9b27b215887af40b159e0), JDBC4.2)");
+//            Class.forName("com.mysql.jdbc.Driver").newInstance();
             con = DriverManager.getConnection(server, user, pwd);
             System.out.println("Connected!");
+            sqlInjection(con,"insert into T_Employee values(4,'Tyron','Jamal','Ohio')");
 
             executeQuery(con, "SELECT * FROM T_Employee");
         } finally {
@@ -71,6 +75,19 @@ public class JDBCTest {
                 System.out.println();
             }
 
+        }
+    }
+
+    public static void sqlInjection(Connection con, String sql) {
+
+        try (Statement stmt = con.createStatement()) {
+
+            stmt.executeUpdate(sql);
+
+
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }

@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29cf49d2-d410-47cd-96e9-acc5f247a89a" name="Changes" comment="refactoring &#10;com.company bortaget&#10;JDBCTest.java tillgat">
-      <change afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/Author.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/mysql-connector-j-8.0.31.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/JDBCTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/JDBCTest.java" afterDir="false" />
+    <list default="true" id="29cf49d2-d410-47cd-96e9-acc5f247a89a" name="Changes" comment="lets go">
+      <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/Author.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/Author.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,6 +25,11 @@
         <option name="argument" value="--tags" />
         <option name="title" value="All" />
       </GitPushTagMode>
+    </option>
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -91,7 +92,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669833036374</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="lets go">
+      <created>1669901866793</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1669901866794</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -109,8 +117,8 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="lets go" />
     <MESSAGE value="refactoring &#10;com.company bortaget&#10;JDBCTest.java tillgat" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactoring &#10;com.company bortaget&#10;JDBCTest.java tillgat" />
+    <MESSAGE value="lets go" />
+    <option name="LAST_COMMIT_MESSAGE" value="lets go" />
   </component>
 </project>

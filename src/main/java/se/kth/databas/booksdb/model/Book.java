@@ -1,6 +1,7 @@
 package se.kth.databas.booksdb.model;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 /**
  * Representation of a book.
@@ -17,6 +18,7 @@ public class Book {
     // TODO: 
     // Add authors, as a separate class(!), and corresponding methods, to your implementation
     // as well, i.e. "private ArrayList<Author> authors;"
+//    private ArrayList<Autors> autors;todo implemetn
     
     public Book(int bookId, String isbn, String title, Date published) {
         this.bookId = bookId;

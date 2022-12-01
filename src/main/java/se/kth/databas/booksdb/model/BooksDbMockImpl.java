@@ -29,6 +29,7 @@ public class BooksDbMockImpl implements BooksDbInterface {
     @Override
     public boolean connect(String database) throws BooksDbException {
         // mock implementation
+
         return true;
     }
 

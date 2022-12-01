@@ -34,7 +34,8 @@ public class JDBCTest {
 //            Class.forName("com.mysql.jdbc.Driver").newInstance();
             con = DriverManager.getConnection(server, user, pwd);
             System.out.println("Connected!");
-            sqlInjection(con,"insert into T_Employee values(4,'Tyron','Jamal','Ohio')");
+
+            sqlInjection(con,"INSERT into T_Employee values(1,'Marcus','Okodugha','Stockholm')");
 
             executeQuery(con, "SELECT * FROM T_Employee");
         } finally {
@@ -84,12 +85,13 @@ public class JDBCTest {
 
             stmt.executeUpdate(sql);
 
-
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
+    //"DELETE FROM T_Employee WHERE FirstName='Marcus'
+    //"INSERT into T_Employee values(1,'Marcus','Okodugha','Stockholm')"
 }
 
 

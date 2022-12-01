@@ -63,8 +63,16 @@ public class Book {
         }
     }
 
+
     @Override
     public String toString() {
-        return title + ", " + isbn + ", " + published.toString();
+        return "Book{" +
+                "bookId=" + bookId +
+                ", isbn='" + isbn + '\'' +
+                ", title='" + title + '\'' +
+                ", published=" + published +
+                ", storyLine='" + storyLine + '\'' +
+                ", authors=" + authors +
+                '}';
     }
 }

@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29cf49d2-d410-47cd-96e9-acc5f247a89a" name="Changes" comment="finishing up author class">
-      <change afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/testingClasses.java" afterDir="false" />
+    <list default="true" id="29cf49d2-d410-47cd-96e9-acc5f247a89a" name="Changes" comment="finishing up author class and made changes to book class">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/Author.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/Author.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/Book.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/Book.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/testingClasses.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/testingClasses.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,7 +135,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669902089969</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="finishing up author class and made changes to book class">
+      <created>1669903394669</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1669903394669</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -155,6 +163,7 @@
     <MESSAGE value="refactoring &#10;com.company bortaget&#10;JDBCTest.java tillgat" />
     <MESSAGE value="lets go" />
     <MESSAGE value="finishing up author class" />
-    <option name="LAST_COMMIT_MESSAGE" value="finishing up author class" />
+    <MESSAGE value="finishing up author class and made changes to book class" />
+    <option name="LAST_COMMIT_MESSAGE" value="finishing up author class and made changes to book class" />
   </component>
 </project>

@@ -6,6 +6,13 @@ public class Author {
     private String firstName;
     private String lastName;
 
+    public Author(int authorId, String isbn, String firstName, String lastName) {
+        this.authorId = authorId;
+        this.isbn = isbn;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
     public int getAuthorId() {
         return authorId;
     }
@@ -37,6 +44,7 @@ public class Author {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
 
     @Override
     public String toString() {

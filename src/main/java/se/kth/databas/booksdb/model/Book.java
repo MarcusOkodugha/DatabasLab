@@ -20,14 +20,13 @@ public class Book {
     // Add authors, as a separate class(!), and corresponding methods, to your implementation
     // as well, i.e. "private ArrayList<Author> authors;"
     private ArrayList<Author> authors;
-    public Book(int bookId, String isbn, String title, Date published, Author author) {
+    public Book(int bookId, String isbn, String title, Date published) {
         this.bookId = bookId;
         this.isbn = isbn;
         this.title = title;
         this.published = published;
         setValidISBN(isbn);
         authors = new ArrayList<>();
-        addAuthor(author);
     }
 
     private void setValidISBN(String isbn){

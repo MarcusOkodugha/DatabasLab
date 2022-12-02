@@ -8,6 +8,7 @@ public class Author {
     private String lastName;
     private ArrayList<Book> books;
 
+    //TODO: make sure that authorID is needed as a constructor (database autoincrements)
     public Author(int authorId, String firstName, String lastName) {
         this.authorId = authorId;
 

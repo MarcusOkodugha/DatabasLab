@@ -16,10 +16,11 @@ public class Book {
     private String title;
     private Date published;
     private String storyLine = "";
-    // TODO: 
+    private ArrayList<Author> authors;
+    private ArrayList<Genre> genresList;
+    // TODO:
     // Add authors, as a separate class(!), and corresponding methods, to your implementation
     // as well, i.e. "private ArrayList<Author> authors;"
-    private ArrayList<Author> authors;
     public Book(int bookId, String isbn, String title, Date published) {
         this.bookId = bookId;
         this.isbn = isbn;
@@ -27,6 +28,16 @@ public class Book {
         this.published = published;
         setValidISBN(isbn);
         authors = new ArrayList<>();
+        genresList = new ArrayList<>();
+    }
+    public void addGenre(Genre genre){
+        if (genre!=null){
+            genresList.add(genre);
+        }
+    }
+
+    public ArrayList<Genre> getGenresList() {
+        return (ArrayList<Genre>) genresList.clone();
     }
 
     private void setValidISBN(String isbn){

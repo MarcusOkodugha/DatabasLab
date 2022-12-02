@@ -103,21 +103,26 @@ public class BooksDbMockImpl implements BooksDbInterface {
             throw new RuntimeException(e);
         }
     }
+
+
+
     @Override
-    public void insertBook() {
+    public void insertBook(Book book) {//Takes a book and inserts to the database
 
-        Book book1 = DATA[0];
+        String bookIsbn= "\'"+book.getIsbn()+"\'";
+        String bookTitle= "\'"+book.getTitle()+"\'";
+        String bookDate= "\'"+book.getPublished().toString()+"\'";
+        String bookStoryLine= "\"test Story Line\"";
+          String sql= "INSERT into T_Book(isbn,title,published,storyLine)VALUES ("+bookIsbn+","+bookTitle+","+bookDate+","+bookStoryLine+");";
 
-
-        String book1String = book1.toString();
-        System.out.println(book1String);
-        String beginningSql="INSERT into T_Book values(6,'Alex','Ruski','0000001";
-//        try (Statement stmt = con.createStatement()) {
-//            stmt.executeUpdate(sql);
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
+        try (Statement stmt = con.createStatement()) {
+            stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
+
+
 
     @Override
     public void executeQuery(String query) throws SQLException {
@@ -147,7 +152,11 @@ public class BooksDbMockImpl implements BooksDbInterface {
             }
         }
     }
-    private static final Book[] DATA = {
+    public void addBooksFromDbToArray(){
+
+    }
+
+    public static final Book[] DATA = {
             new Book(1, "123456789", "Databases Illuminated", new Date(2018, 1, 1)),
             new Book(2, "234567891", "Dark Databases", new Date(1990, 1, 1)),
             new Book(3, "456789012", "The buried giant", new Date(2000, 1, 1)),

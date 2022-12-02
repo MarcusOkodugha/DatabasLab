@@ -4,14 +4,13 @@ import java.util.ArrayList;
 
 public class Author {
     private int authorId;
-    private String isbn;
     private String firstName;
     private String lastName;
     private ArrayList<Book> books;
 
-    public Author(int authorId, String isbn, String firstName, String lastName) {
+    public Author(int authorId, String firstName, String lastName) {
         this.authorId = authorId;
-        this.isbn = isbn;
+
         this.firstName = firstName;
         this.lastName = lastName;
         this.books =  new ArrayList<>();
@@ -27,10 +26,6 @@ public class Author {
         return authorId;
     }
 
-    public String getIsbn() {
-        return isbn;
-    }
-
     public String getFirstName() {
         return firstName;
     }
@@ -43,9 +38,6 @@ public class Author {
         this.authorId = authorId;
     }
 
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
-    }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -60,7 +52,6 @@ public class Author {
     public String toString() {
         return "Author{" +
                 "authorId=" + authorId +
-                ", isbn='" + isbn + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 '}';

@@ -10,6 +10,8 @@ import se.kth.databas.booksdb.view.BooksPane;
 
 import java.sql.*;
 
+import static se.kth.databas.booksdb.model.BooksDbMockImpl.DATA;
+
 /**
  * Application start up.
  *
@@ -43,12 +45,13 @@ public class Main extends Application {
 
     public void testingMethod(BooksDbMockImpl booksDb) throws SQLException {
 
-        booksDb.insertBook();
 
-        System.out.println("inside T_Author Table");
-        booksDb.executeQuery("SELECT * FROM T_Author");
-        System.out.println("inside T_Book Table");
-        booksDb.executeQuery("SELECT * FROM T_Book");
+
+//        booksDb.insertBook(DATA[1]);
+////        System.out.println("inside T_Author Table");
+////        booksDb.executeQuery("SELECT * FROM T_Author");
+//        System.out.println("inside T_Book Table");
+//        booksDb.executeQuery("SELECT * FROM T_Book");
     }
 
     public static void main(String[] args) {

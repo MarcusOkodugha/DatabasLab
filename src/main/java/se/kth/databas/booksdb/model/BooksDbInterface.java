@@ -36,5 +36,5 @@ public interface BooksDbInterface {
 
     public void sqlInjection(String sql);
 
-    public void insertBook();
+    public void insertBook(Book book);
 }

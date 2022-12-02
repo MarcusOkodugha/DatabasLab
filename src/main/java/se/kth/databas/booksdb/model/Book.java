@@ -30,10 +30,10 @@ public class Book {
     }
 
     private void setValidISBN(String isbn){
-        if(isbn.length() == 13){
+        if(isbn.length() == 9){
             this.isbn = isbn;
         }else {
-            throw new IllegalArgumentException("ISBN not 13 numbers");
+            throw new IllegalArgumentException("ISBN not 9 numbers");
         }
     }
 

@@ -4,12 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29cf49d2-d410-47cd-96e9-acc5f247a89a" name="Changes" comment="sql injections added">
-      <change afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/Author.java" afterDir="false" />
+    <list default="true" id="29cf49d2-d410-47cd-96e9-acc5f247a89a" name="Changes" comment="sargons code added">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/Author.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/Author.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/Book.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/Book.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/BooksDbInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/BooksDbInterface.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/BooksDbMockImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/BooksDbMockImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/testingClasses.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/testingClasses.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,6 +67,7 @@
       <recent name="C:\JavaProgram\DatabasLab1\src\main\java\se\kth\databas\booksdb" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\JavaProgram\DatabasLab1\src\main\java\se\kth\databas\booksdb\model" />
       <recent name="C:\JavaProgram\DatabasLab1\src\main\java" />
     </key>
   </component>
@@ -99,7 +102,7 @@
       <updated>1669820732518</updated>
       <workItem from="1669820733799" duration="10695000" />
       <workItem from="1669887052619" duration="13705000" />
-      <workItem from="1669905373303" duration="9810000" />
+      <workItem from="1669905373303" duration="14597000" />
     </task>
     <task id="LOCAL-00001" summary="lets go">
       <created>1669821712566</created>
@@ -136,7 +139,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669902039479</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="sargons code added">
+      <created>1669986242566</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1669986242567</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -157,6 +167,7 @@
     <MESSAGE value="lets go" />
     <MESSAGE value="refactoring &#10;com.company bortaget&#10;JDBCTest.java tillgat" />
     <MESSAGE value="sql injections added" />
-    <option name="LAST_COMMIT_MESSAGE" value="sql injections added" />
+    <MESSAGE value="sargons code added" />
+    <option name="LAST_COMMIT_MESSAGE" value="sargons code added" />
   </component>
 </project>

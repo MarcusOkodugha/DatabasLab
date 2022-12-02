@@ -9,8 +9,8 @@ public class testingClasses {
 
         Book book1 = new Book(1, "0295673429234", "Lord of the rings", Date.valueOf(LocalDate.now()));
 
-        Author author1 = new Author(1,book1.getIsbn(),"Marcus", "Okodugha");
-        book1.addAuthor(new Author(2,book1.getIsbn(),"Giga", "Chad"));
+        Author author1 = new Author(1,"Marcus", "Okodugha");
+        book1.addAuthor(new Author(2,"Giga", "Chad"));
 
         book1.addAuthor(author1);
         System.out.println(book1);

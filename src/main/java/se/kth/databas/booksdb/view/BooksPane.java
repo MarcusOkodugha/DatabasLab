@@ -1,6 +1,7 @@
 package se.kth.databas.booksdb.view;
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -33,6 +34,8 @@ public class BooksPane extends VBox {
     private ComboBox<SearchMode> searchModeBox;
     private TextField searchField;
     private Button searchButton;
+    private Button testButton;
+    private Button testButton2;
 
     private MenuBar menuBar;
 
@@ -76,7 +79,7 @@ public class BooksPane extends VBox {
         FlowPane bottomPane = new FlowPane();
         bottomPane.setHgap(10);
         bottomPane.setPadding(new Insets(10, 10, 10, 10));
-        bottomPane.getChildren().addAll(searchModeBox, searchField, searchButton);
+        bottomPane.getChildren().addAll(searchModeBox, searchField, searchButton,testButton,testButton2);
 
         BorderPane mainPane = new BorderPane();
         mainPane.setCenter(booksTable);
@@ -117,7 +120,9 @@ public class BooksPane extends VBox {
         searchModeBox.getItems().addAll(SearchMode.values());
         searchModeBox.setValue(SearchMode.Title);
         searchButton = new Button("Search");
-        
+        testButton = new Button("Test");
+        testButton2 = new Button("Test2");
+
         // event handling (dispatch to controller)
         searchButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -125,6 +130,23 @@ public class BooksPane extends VBox {
                 String searchFor = searchField.getText();
                 SearchMode mode = searchModeBox.getValue();
                 controller.onSearchSelected(searchFor, mode);
+            }
+        });
+
+        testButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                controller.testShowBook();
+            }
+        });
+        testButton2.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    controller.onTest2Selected();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
     }

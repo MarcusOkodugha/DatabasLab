@@ -4,10 +4,12 @@ import se.kth.databas.booksdb.model.Book;
 import se.kth.databas.booksdb.model.BooksDbInterface;
 import se.kth.databas.booksdb.model.SearchMode;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static javafx.scene.control.Alert.AlertType.*;
+import static se.kth.databas.booksdb.model.BooksDbMockImpl.DATA;
 
 /**
  * The controller is responsible for handling user requests and update the view
@@ -34,6 +36,7 @@ public class Controller {
                         result = booksDb.searchBooksByTitle(searchFor);
                         break;
                     case ISBN:
+                        result = booksDb.searchBooksByIsbn(searchFor);
                         // ...
                         break;
                     case Author:
@@ -59,4 +62,12 @@ public class Controller {
 
     // TODO:
     // Add methods for all types of user interaction (e.g. via  menus).
+
+    public void testShowBook(){
+        booksView.displayBooks(booksDb.getArrayListOfBooks());
+    }
+
+    public void onTest2Selected() throws SQLException {
+        booksDb.addAllBooksFromTableToArray();
+    }
 }

@@ -4,14 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29cf49d2-d410-47cd-96e9-acc5f247a89a" name="Changes" comment="sargons code added">
+    <list default="true" id="29cf49d2-d410-47cd-96e9-acc5f247a89a" name="Changes" comment="Nu kan man lägga in böker till db med metoden insertBook i BooksDbMockImpl">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/Author.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/Author.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/Book.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/Book.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/BooksDbInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/BooksDbInterface.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/BooksDbMockImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/BooksDbMockImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/testingClasses.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/testingClasses.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/view/BooksPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/view/BooksPane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/view/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/view/Controller.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,7 +101,7 @@
       <updated>1669820732518</updated>
       <workItem from="1669820733799" duration="10695000" />
       <workItem from="1669887052619" duration="13705000" />
-      <workItem from="1669905373303" duration="14597000" />
+      <workItem from="1669905373303" duration="25298000" />
     </task>
     <task id="LOCAL-00001" summary="lets go">
       <created>1669821712566</created>
@@ -146,7 +145,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669986242567</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Nu kan man lägga in böker till db med metoden insertBook i BooksDbMockImpl">
+      <created>1669991397851</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1669991397851</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -168,6 +174,7 @@
     <MESSAGE value="refactoring &#10;com.company bortaget&#10;JDBCTest.java tillgat" />
     <MESSAGE value="sql injections added" />
     <MESSAGE value="sargons code added" />
-    <option name="LAST_COMMIT_MESSAGE" value="sargons code added" />
+    <MESSAGE value="Nu kan man lägga in böker till db med metoden insertBook i BooksDbMockImpl" />
+    <option name="LAST_COMMIT_MESSAGE" value="Nu kan man lägga in böker till db med metoden insertBook i BooksDbMockImpl" />
   </component>
 </project>

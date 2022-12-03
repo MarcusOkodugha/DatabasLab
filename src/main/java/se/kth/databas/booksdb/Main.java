@@ -46,7 +46,6 @@ public class Main extends Application {
     public void testingMethod(BooksDbMockImpl booksDb) throws SQLException {
 
 
-
 //        booksDb.insertBook(DATA[1]);
 ////        System.out.println("inside T_Author Table");
 ////        booksDb.executeQuery("SELECT * FROM T_Author");

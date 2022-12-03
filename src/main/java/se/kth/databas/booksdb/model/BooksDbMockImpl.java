@@ -21,6 +21,7 @@ import java.util.List;
 public class BooksDbMockImpl implements BooksDbInterface {
 
     private final List<Book> books;
+    private ArrayList arrayListOfBooks = new ArrayList<Book>();
     Connection con = null;
 
     public BooksDbMockImpl() {
@@ -93,6 +94,18 @@ public class BooksDbMockImpl implements BooksDbInterface {
         return result;
     }
 
+    @Override
+    public List<Book> searchBooksByIsbn(String serchIsbn) {
+            //mock implementasino denna ska också göra en quary inte söka genom alla böker
+        List<Book> result = new ArrayList<>();
+        serchIsbn = serchIsbn.toLowerCase();
+        for (Book book : books) {
+            if (book.getIsbn().toLowerCase().contains(serchIsbn)) {
+                result.add(book);
+            }
+        }
+        return result;
+    }
 
 
     @Override
@@ -103,8 +116,6 @@ public class BooksDbMockImpl implements BooksDbInterface {
             throw new RuntimeException(e);
         }
     }
-
-
 
     @Override
     public void insertBook(Book book) {//Takes a book and inserts to the database
@@ -122,7 +133,23 @@ public class BooksDbMockImpl implements BooksDbInterface {
         }
     }
 
+    @Override
+    public void addAllBooksFromTableToArray() throws SQLException {
+        String query="SELECT * FROM T_Book";
 
+        try (Statement stmt = con.createStatement()) {
+            // Execute the SQL statement
+            ResultSet rs = stmt.executeQuery(query);
+
+            // Get the attribute values
+            while (rs.next()) {
+
+                Book nextBook = new Book(rs.getInt("bookId"),rs.getString("isbn"),rs.getString("title"),rs.getDate("published"));
+                arrayListOfBooks.add(nextBook);
+            }
+        }
+
+    }
 
     @Override
     public void executeQuery(String query) throws SQLException {
@@ -152,9 +179,7 @@ public class BooksDbMockImpl implements BooksDbInterface {
             }
         }
     }
-    public void addBooksFromDbToArray(){
 
-    }
 
     public static final Book[] DATA = {
             new Book(1, "123456789", "Databases Illuminated", new Date(2018, 1, 1)),
@@ -168,4 +193,7 @@ public class BooksDbMockImpl implements BooksDbInterface {
             new Book(9, "345678912", "Microserfs", new Date(2000, 1, 1)),
     };
 
+    public ArrayList getArrayListOfBooks() {
+        return arrayListOfBooks;
+    }
 }

@@ -1,6 +1,7 @@
 package se.kth.databas.booksdb.model;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,6 +30,8 @@ public interface BooksDbInterface {
     
     public List<Book> searchBooksByTitle(String title) throws BooksDbException;
 
+    public List<Book> searchBooksByIsbn(String serchIsbn);
+
 
     // TODO: Add abstract methods for all inserts, deletes and queries 
     // mentioned in the instructions for the assignement.
@@ -37,4 +40,8 @@ public interface BooksDbInterface {
     public void sqlInjection(String sql);
 
     public void insertBook(Book book);
+
+    public void addAllBooksFromTableToArray() throws SQLException;
+
+    public ArrayList getArrayListOfBooks();
 }

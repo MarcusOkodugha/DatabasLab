@@ -34,7 +34,8 @@ public interface BooksDbInterface {
     // mentioned in the instructions for the assignement.
     public void executeQuery(String query) throws SQLException;
 
-    public void sqlInjection(String sql);
 
-    public void insertBook(Book book);
+    public void sqlInjection(String sql) throws BooksDbException;
+
+    public void insertBook(Book book) throws BooksDbException;
 }

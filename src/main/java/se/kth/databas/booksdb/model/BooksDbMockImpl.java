@@ -106,7 +106,27 @@ public class BooksDbMockImpl implements BooksDbInterface {
         }
         return result;
     }
+    @Override
+    public List<Book> searchBooksByTitleQuery(String searchSting){
+        String query="SELECT * FROM T_Book WHERE title LIKE"+"\'"+searchSting+"%\'";
+        List<Book> result = new ArrayList<>();
 
+        try (Statement stmt = con.createStatement()) {
+            // Execute the SQL statement
+            ResultSet rs = stmt.executeQuery(query);
+
+            // Get the attribute values
+            while (rs.next()) {
+
+                Book nextBook = new Book(rs.getInt("bookId"),rs.getString("isbn"),rs.getString("title"),rs.getDate("published"));
+                 result.add(nextBook);
+
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return result;
+    }
 
     @Override
     public void sqlInjection(String sql) {

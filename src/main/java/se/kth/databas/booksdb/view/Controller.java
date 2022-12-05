@@ -29,13 +29,16 @@ public class Controller {
 
     protected void onSearchSelected(String searchFor, SearchMode mode) {
         try {
-            if (searchFor != null && searchFor.length() > 1) {
+            if (searchFor != null && searchFor.length() >= 1) {//todo vi ändra till minst en
                 List<Book> result = null;
                 switch (mode) {
                     case Title:
-                        result = booksDb.searchBooksByTitle(searchFor);
+//                        result = booksDb.searchBooksByTitle(searchFor);
+                            result = booksDb.searchBooksByTitleQuery(searchFor);
+
                         break;
                     case ISBN:
+
                         result = booksDb.searchBooksByIsbn(searchFor);
                         // ...
                         break;

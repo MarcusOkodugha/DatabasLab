@@ -32,6 +32,8 @@ public interface BooksDbInterface {
 
     public List<Book> searchBooksByIsbn(String serchIsbn);
 
+    public List<Book> searchBooksByTitleQuery(String searchSting);
+
 
     // TODO: Add abstract methods for all inserts, deletes and queries 
     // mentioned in the instructions for the assignement.

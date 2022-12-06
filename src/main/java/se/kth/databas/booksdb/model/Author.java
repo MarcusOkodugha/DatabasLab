@@ -4,18 +4,21 @@ import java.util.ArrayList;
 
 public class Author {
     private int authorId;
-    private String firstName;
-    private String lastName;
+    private String authorName;
     private ArrayList<Book> books;
 
-    public Author(int authorId, String firstName, String lastName) {
+    public Author(int authorId, String authorName) {
         this.authorId = authorId;
-
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.authorName = authorName;
         this.books =  new ArrayList<>();
 
     }
+
+    public Author(String authorName) {
+        this.authorName = authorName;
+        this.books =  new ArrayList<>();
+    }
+
     public void addBook(Book book){
         if (book!=null){
             books.add(book);
@@ -26,34 +29,29 @@ public class Author {
         return authorId;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
 
-    public String getLastName() {
-        return lastName;
-    }
 
     public void setAuthorId(int authorId) {
         this.authorId = authorId;
     }
 
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public String getAuthorName() {
+        return authorName;
     }
-
 
     @Override
     public String toString() {
         return "Author{" +
                 "authorId=" + authorId +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
+                ", authorName='" + authorName + '\'' +
+                ", books=" + books +
                 '}';
     }
+
+    //todo använd date picker
 }

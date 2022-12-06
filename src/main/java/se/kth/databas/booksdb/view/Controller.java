@@ -1,15 +1,13 @@
 package se.kth.databas.booksdb.view;
 
-import se.kth.databas.booksdb.model.Book;
-import se.kth.databas.booksdb.model.BooksDbInterface;
-import se.kth.databas.booksdb.model.SearchMode;
+import se.kth.databas.booksdb.model.*;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static javafx.scene.control.Alert.AlertType.*;
-import static se.kth.databas.booksdb.model.BooksDbMockImpl.DATA;
 
 /**
  * The controller is responsible for handling user requests and update the view
@@ -33,20 +31,17 @@ public class Controller {
                 List<Book> result = null;
                 switch (mode) {
                     case Title:
-//                        result = booksDb.searchBooksByTitle(searchFor);
-                            result = booksDb.searchBooksByTitleQuery(searchFor);
-
+                        result = booksDb.searchBooksByTitleQuery(searchFor);
                         break;
                     case ISBN:
-
-                        result = booksDb.searchBooksByIsbn(searchFor);
-                        // ...
+                        result = booksDb.searchBooksByIsbnQuery(searchFor);
                         break;
                     case Author:
+                        result = booksDb.searchBookByAuthorQuery(searchFor);
                         // ...
                         break;
                     default:
-                        result= new ArrayList<>();
+                        result = new ArrayList<>();
                 }
                 if (result == null || result.isEmpty()) {
                     booksView.showAlertAndWait(
@@ -59,18 +54,57 @@ public class Controller {
                         "Enter a search string!", WARNING);
             }
         } catch (Exception e) {
-            booksView.showAlertAndWait("Database error.",ERROR);
+            booksView.showAlertAndWait("Database error.", ERROR);
         }
     }
 
     // TODO:
     // Add methods for all types of user interaction (e.g. via  menus).
 
-    public void testShowBook(){
-        booksView.displayBooks(booksDb.getArrayListOfBooks());
+    protected void onExitSelected() throws BooksDbException {
+        booksDb.disconnect();
+        System.exit(0);
+    }
+    protected void onDisconnectSelected() throws BooksDbException {
+        booksDb.disconnect();
+    }
+    protected void onConnectSelected() throws BooksDbException {
+        booksDb.connect("LibraryDB");
     }
 
+    protected void onAddSelected(String isbn, String title, Date published, String authorName) throws SQLException {
+        Book book =new Book(isbn,title,published);
+        Author author =new Author(authorName);
+        booksDb.insertBook(book);
+        booksDb.insertAuthor(author);
+        author.setAuthorId(booksDb.getMaxAuthorIdFromDatabase());
+        author.addBook(book);
+        book.addAuthor(author);
+
+        Written written = new Written(author.getAuthorId(),book.getIsbn());
+        booksDb.insertWritten(written);
+
+        System.out.println(book);
+        System.out.println(author);
+        System.out.println(written);
+    }
+
+    protected void onRemoveSelected(String isbn) throws SQLException {
+        booksDb.removeBookByIsbn(isbn);
+        booksDb.removeWrittenByIsbn(isbn);
+    }
+
+    //todo romve tests
+    public void testShowBook() throws SQLException {
+        booksDb.addAllBooksFromTableToArray();
+        booksView.displayBooks(booksDb.getArrayListOfBooks());
+    }
     public void onTest2Selected() throws SQLException {
         booksDb.addAllBooksFromTableToArray();
     }
+
 }
+
+
+
+        

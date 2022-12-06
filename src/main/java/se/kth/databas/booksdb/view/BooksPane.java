@@ -2,21 +2,29 @@ package se.kth.databas.booksdb.view;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import se.kth.databas.booksdb.model.Book;
-import se.kth.databas.booksdb.model.BooksDbMockImpl;
+import se.kth.databas.booksdb.model.BooksDbException;
+import se.kth.databas.booksdb.model.BooksDbImpl;
 import se.kth.databas.booksdb.model.SearchMode;
 
 
@@ -39,7 +47,7 @@ public class BooksPane extends VBox {
 
     private MenuBar menuBar;
 
-    public BooksPane(BooksDbMockImpl booksDb) {
+    public BooksPane(BooksDbImpl booksDb) {
         final Controller controller = new Controller(booksDb, this);
         this.init(controller);
     }
@@ -74,7 +82,7 @@ public class BooksPane extends VBox {
         // init views and event handlers
         initBooksTable();
         initSearchView(controller);
-        initMenus();
+        initMenus(controller);
 
         FlowPane bottomPane = new FlowPane();
         bottomPane.setHgap(10);
@@ -120,7 +128,7 @@ public class BooksPane extends VBox {
         searchModeBox.getItems().addAll(SearchMode.values());
         searchModeBox.setValue(SearchMode.Title);
         searchButton = new Button("Search");
-        testButton = new Button("Test");
+        testButton = new Button("Show All Books");
         testButton2 = new Button("Test2");
 
         // event handling (dispatch to controller)
@@ -132,11 +140,14 @@ public class BooksPane extends VBox {
                 controller.onSearchSelected(searchFor, mode);
             }
         });
-
         testButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                controller.testShowBook();
+                try {
+                    controller.testShowBook();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         testButton2.setOnAction(new EventHandler<ActionEvent>() {
@@ -151,7 +162,7 @@ public class BooksPane extends VBox {
         });
     }
 
-    private void initMenus() {
+    private void initMenus(Controller controller) {
 
         Menu fileMenu = new Menu("File");
         MenuItem exitItem = new MenuItem("Exit");
@@ -159,19 +170,160 @@ public class BooksPane extends VBox {
         MenuItem disconnectItem = new MenuItem("Disconnect");
         fileMenu.getItems().addAll(exitItem, connectItem, disconnectItem);
 
+        //event handeler vi controller
+        exitItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Exit");
+                try {
+                    controller.onExitSelected();
+                } catch (BooksDbException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        connectItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    controller.onConnectSelected();
+                } catch (BooksDbException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        disconnectItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    controller.onDisconnectSelected();
+                } catch (BooksDbException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
         Menu searchMenu = new Menu("Search");
         MenuItem titleItem = new MenuItem("Title");
         MenuItem isbnItem = new MenuItem("ISBN");
         MenuItem authorItem = new MenuItem("Author");
         searchMenu.getItems().addAll(titleItem, isbnItem, authorItem);
-
+        //event handeler
+        titleItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                showSearchDialogBox(controller,"Title",SearchMode.Title);
+            }
+        });
+        isbnItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                showSearchDialogBox(controller,"Isbn",SearchMode.ISBN);
+            }
+        });
+        authorItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                showSearchDialogBox(controller,"Author",SearchMode.Author);
+            }
+        });
         Menu manageMenu = new Menu("Manage");
         MenuItem addItem = new MenuItem("Add");
         MenuItem removeItem = new MenuItem("Remove");
         MenuItem updateItem = new MenuItem("Update");
         manageMenu.getItems().addAll(addItem, removeItem, updateItem);
 
+        addItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    showAddItemDialog(controller);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        removeItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    showRemoveDialog(controller);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        updateItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    showUpdateDialog(controller);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
         menuBar = new MenuBar();
         menuBar.getMenus().addAll(fileMenu, searchMenu, manageMenu);
     }
+    public void showSearchDialogBox(Controller controller,String sType,SearchMode searchMode){
+        TextInputDialog textInputDialog = new TextInputDialog(sType);
+        textInputDialog.setHeaderText("Search for "+sType);
+        textInputDialog.showAndWait();
+        controller.onSearchSelected(textInputDialog.getEditor().getText(),searchMode);
+    }
+
+    public void showAddItemDialog(Controller controller) throws SQLException {
+        Dialog dialog = new Dialog<>();
+        dialog.setTitle("Add Book");
+        dialog.setHeaderText("Add Book");
+        DialogPane dialogPane = dialog.getDialogPane();
+        dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+        TextField titleTextField = new TextField("Title");
+        TextField isbnTextField = new TextField("Isbn");
+        TextField authorNameTextField = new TextField("Author name");
+        DatePicker datePicker = new DatePicker(LocalDate.now());
+        ObservableList options = FXCollections.observableArrayList();
+//        ComboBox comboBox = new ComboBox<>(options);//todo implementer för genra
+//        comboBox.getSelectionModel().selectFirst();
+            //comboBox.getValue()
+        dialogPane.setContent(new VBox(8,titleTextField,authorNameTextField,isbnTextField, datePicker));
+        dialog.showAndWait();
+        Date date = Date.valueOf(datePicker.getEditor().getText());
+        controller.onAddSelected(isbnTextField.getText(),titleTextField.getText(),date,authorNameTextField.getText());
+    }
+    public void showRemoveDialog(Controller controller) throws SQLException {
+        Dialog dialog = new Dialog<>();
+        dialog.setTitle("Remove Book");
+        dialog.setHeaderText("Remove book");
+        DialogPane dialogPane = dialog.getDialogPane();
+        dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+        TextField isbnTextField = new TextField("Isbn");
+
+
+        dialogPane.setContent(new VBox(8,isbnTextField));
+        dialog.showAndWait();
+        controller.onRemoveSelected(isbnTextField.getText());
+    }
+    public void showUpdateDialog(Controller controller) throws SQLException {//todo
+        Dialog dialog = new Dialog<>();
+        dialog.setTitle("Add Book");
+        dialog.setHeaderText("Add Book");
+        DialogPane dialogPane = dialog.getDialogPane();
+        dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+        TextField titleTextField = new TextField("Title");
+        TextField isbnTextField = new TextField("Isbn");
+        TextField authorNameTextField = new TextField("Author name");
+        DatePicker datePicker = new DatePicker(LocalDate.now());
+        ObservableList options = FXCollections.observableArrayList();
+//        ComboBox comboBox = new ComboBox<>(options);//todo implementer för genra
+//        comboBox.getSelectionModel().selectFirst();
+        //comboBox.getValue()
+        dialogPane.setContent(new VBox(8,titleTextField,authorNameTextField,isbnTextField, datePicker));
+        dialog.showAndWait();
+        Date date = Date.valueOf(datePicker.getEditor().getText());
+        controller.onAddSelected(isbnTextField.getText(),titleTextField.getText(),date,authorNameTextField.getText());
+    }
+
+
 }

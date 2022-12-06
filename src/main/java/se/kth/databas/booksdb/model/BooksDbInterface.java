@@ -27,13 +27,12 @@ public interface BooksDbInterface {
     public boolean connect(String database) throws BooksDbException;
     
     public void disconnect() throws BooksDbException;
-    
-    public List<Book> searchBooksByTitle(String title) throws BooksDbException;
-
-    public List<Book> searchBooksByIsbn(String serchIsbn);
 
     public List<Book> searchBooksByTitleQuery(String searchSting);
 
+    public List<Book> searchBooksByIsbnQuery(String searchSting);
+
+    public List<Book> searchBookByAuthorQuery(String searchSting);
 
     // TODO: Add abstract methods for all inserts, deletes and queries 
     // mentioned in the instructions for the assignement.
@@ -41,9 +40,14 @@ public interface BooksDbInterface {
 
     public void sqlInjection(String sql);
 
-    public void insertBook(Book book);
+    public void insertBook(Book book) throws SQLException;
+    public void insertAuthor(Author author);
+    public void insertWritten(Written written);
 
+    public void removeBookByIsbn(String isbn) throws SQLException;
+
+    public void removeWrittenByIsbn(String isbn) throws SQLException;
     public void addAllBooksFromTableToArray() throws SQLException;
-
+    public int getMaxAuthorIdFromDatabase() throws SQLException;
     public ArrayList getArrayListOfBooks();
 }

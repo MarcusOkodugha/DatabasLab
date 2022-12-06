@@ -257,7 +257,7 @@ public class BooksPane extends VBox {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    showUpdateDialog(controller);
+                    showIsbnDialog(controller);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
@@ -299,30 +299,36 @@ public class BooksPane extends VBox {
         DialogPane dialogPane = dialog.getDialogPane();
         dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
         TextField isbnTextField = new TextField("Isbn");
-
-
         dialogPane.setContent(new VBox(8,isbnTextField));
         dialog.showAndWait();
         controller.onRemoveSelected(isbnTextField.getText());
     }
-    public void showUpdateDialog(Controller controller) throws SQLException {//todo
+    public void showIsbnDialog(Controller controller) throws SQLException {
         Dialog dialog = new Dialog<>();
-        dialog.setTitle("Add Book");
-        dialog.setHeaderText("Add Book");
+        dialog.setTitle("Update Book");
+        dialog.setHeaderText("Enter isbn of the book you want to update");
         DialogPane dialogPane = dialog.getDialogPane();
         dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-        TextField titleTextField = new TextField("Title");
         TextField isbnTextField = new TextField("Isbn");
+        dialogPane.setContent(new VBox(8,isbnTextField));
+        dialog.showAndWait();
+        showUpdateDialog(controller,isbnTextField.getText());
+    }
+        public void showUpdateDialog(Controller controller,String oldIsbn) throws SQLException {//todo
+        Dialog dialog = new Dialog<>();
+        dialog.setTitle("Update book");
+        dialog.setHeaderText("Update book");
+        DialogPane dialogPane = dialog.getDialogPane();
+        dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+        TextField titleTextField = new TextField(controller.getBookFromDatabaseByIsbnController(oldIsbn).getTitle());
+        TextField isbnTextField = new TextField(oldIsbn);
         TextField authorNameTextField = new TextField("Author name");
         DatePicker datePicker = new DatePicker(LocalDate.now());
-        ObservableList options = FXCollections.observableArrayList();
-//        ComboBox comboBox = new ComboBox<>(options);//todo implementer för genra
-//        comboBox.getSelectionModel().selectFirst();
-        //comboBox.getValue()
+
         dialogPane.setContent(new VBox(8,titleTextField,authorNameTextField,isbnTextField, datePicker));
         dialog.showAndWait();
         Date date = Date.valueOf(datePicker.getEditor().getText());
-        controller.onAddSelected(isbnTextField.getText(),titleTextField.getText(),date,authorNameTextField.getText());
+        controller.onUpdateSelected(oldIsbn,isbnTextField.getText(),titleTextField.getText(),date,authorNameTextField.getText());
     }
 
 

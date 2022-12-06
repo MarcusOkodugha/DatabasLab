@@ -41,8 +41,9 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    public void testingMethod(BooksDbImpl booksDb) {
-//        System.out.println(booksDb.getMaxAuthorIdFromDatabase());
+    public void testingMethod(BooksDbImpl booksDb) throws SQLException {
+//        System.out.println(booksDb.getBookFromDatabaseByIsbn("123456789"));
+        //        System.out.println(booksDb.getMaxAuthorIdFromDatabase());
 //        booksDb.insertBook(DATA[1]);
 ////        System.out.println("inside T_Author Table");
 ////        booksDb.executeQuery("SELECT * FROM T_Author");

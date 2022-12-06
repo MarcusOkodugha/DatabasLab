@@ -50,4 +50,5 @@ public interface BooksDbInterface {
     public void addAllBooksFromTableToArray() throws SQLException;
     public int getMaxAuthorIdFromDatabase() throws SQLException;
     public ArrayList getArrayListOfBooks();
+    public Book getBookFromDatabaseByIsbn(String isbn) throws SQLException;
 }

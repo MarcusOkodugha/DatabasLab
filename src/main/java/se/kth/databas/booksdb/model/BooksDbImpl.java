@@ -141,7 +141,6 @@ public class BooksDbImpl implements BooksDbInterface {
         }
         return result;
     }
-
     @Override
     public List<Book> searchBookByAuthorQuery(String searchSting){
         String query="SELECT * FROM T_Author WHERE authorName LIKE"+"\'"+searchSting+"%\'";
@@ -213,7 +212,6 @@ public class BooksDbImpl implements BooksDbInterface {
             throw new RuntimeException(e);
         }
     }
-
     @Override
     public void insertBook(Book book) throws SQLException {//Takes a book and inserts to the database
         String bookIsbn= "\'"+book.getIsbn()+"\'";
@@ -238,7 +236,6 @@ public class BooksDbImpl implements BooksDbInterface {
             throw new RuntimeException(e);
         }
     }
-
     public void insertWritten(Written written) {
         String authorId= "\'"+written.getAuthorId()+"\'";
         String bookIsbn= "\'"+written.getIsbn()+"\'";
@@ -249,7 +246,6 @@ public class BooksDbImpl implements BooksDbInterface {
             throw new RuntimeException(e);
         }
     }
-
     public void removeBookByIsbn(String isbn) throws SQLException {
         String query="DELETE FROM T_Book WHERE isbn="+isbn;
         executeUpdate(query);
@@ -263,6 +259,13 @@ public class BooksDbImpl implements BooksDbInterface {
             stmt.executeUpdate(query);
         }
     }
+//    private ResultSet executeAndGetQueryResults(String query) throws SQLException {
+//        ResultSet rs;
+//        try (Statement stmt = con.createStatement()) {
+//            rs = stmt.executeQuery(query);
+//        }
+//        return rs;
+//    }
 
     @Override
     public void addAllBooksFromTableToArray() throws SQLException {
@@ -282,22 +285,14 @@ public class BooksDbImpl implements BooksDbInterface {
     @Override
     public void executeQuery(String query) throws SQLException {
         try (Statement stmt = con.createStatement()) {
-            // Execute the SQL statement
             ResultSet rs = stmt.executeQuery(query);
-            // Get the attribute names
             ResultSetMetaData metaData = rs.getMetaData();
             int ccount = metaData.getColumnCount();
             for (int c = 1; c <= ccount; c++) {
                 System.out.print(metaData.getColumnName(c) + "\t");
             }
             System.out.println();
-            // Get the attribute values
             while (rs.next()) {
-                // NB! This is an example, -not- the preferred way to retrieve data.
-                // You should use methods that return a specific data type, like
-                // rs.getInt(), rs.getString() or such.
-                // It's also advisable to store each tuple (row) in an object of
-                // custom type (e.g. Employee).
                 for (int c = 1; c <= ccount; c++) {
                     System.out.print(rs.getObject(c) + "\t");
                 }
@@ -333,5 +328,18 @@ public class BooksDbImpl implements BooksDbInterface {
         }
         System.out.println("result "+result);
         return result;
+    }
+    public Book getBookFromDatabaseByIsbn(String isbn) throws SQLException {
+        String query="SELECT * FROM T_Book WHERE isbn="+isbn;
+        Book nextBook = null;
+        try (Statement stmt = con.createStatement()) {
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                nextBook = new Book(rs.getInt("bookId"),rs.getString("isbn"),rs.getString("title"),rs.getDate("published"));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return nextBook;
     }
 }

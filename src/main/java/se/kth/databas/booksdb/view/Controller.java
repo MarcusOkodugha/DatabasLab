@@ -94,6 +94,13 @@ public class Controller {
         booksDb.removeWrittenByIsbn(isbn);
     }
 
+    protected void onUpdateSelected(String oldIsbn, String newIsbn, String title, Date published, String authorName) throws SQLException {
+        if (!oldIsbn.isEmpty()){//todo trow exception
+            onRemoveSelected(oldIsbn);
+            onAddSelected(newIsbn,title,published,authorName);
+        }
+    }
+
     //todo romve tests
     public void testShowBook() throws SQLException {
         booksDb.addAllBooksFromTableToArray();
@@ -101,6 +108,9 @@ public class Controller {
     }
     public void onTest2Selected() throws SQLException {
         booksDb.addAllBooksFromTableToArray();
+    }
+    public Book getBookFromDatabaseByIsbnController(String isbn) throws SQLException {
+        return booksDb.getBookFromDatabaseByIsbn(isbn);
     }
 
 }

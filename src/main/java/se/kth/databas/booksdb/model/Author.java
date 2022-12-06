@@ -48,9 +48,7 @@ public class Author {
     public String toString() {
         return "Author{" +
                 "authorId=" + authorId +
-                ", authorName='" + authorName + '\'' +
-                ", books=" + books +
-                '}';
+                ", authorName='" + authorName + '\'';
     }
 
     //todo använd date picker

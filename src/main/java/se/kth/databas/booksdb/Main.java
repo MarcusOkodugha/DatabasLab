@@ -52,9 +52,7 @@ public class Main extends Application {
     }
 
     public void insertAllBooksFromDATA(BooksDbImpl booksDb) throws SQLException {
-        for (int i = 0; i < 9; i++) {
-            booksDb.insertBook(DATA[i]);
-        }
+
     }
 
     public static void main(String[] args) {

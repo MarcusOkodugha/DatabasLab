@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static javafx.scene.control.Alert.AlertType.*;
+import static se.kth.databas.booksdb.model.BooksDbImpl.DATA;
 
 /**
  * The controller is responsible for handling user requests and update the view
@@ -25,7 +26,7 @@ public class Controller {
         this.booksView = booksView;
     }
 
-    protected void onSearchSelected(String searchFor, SearchMode mode) {
+    protected List<Book> onSearchSelected(String searchFor, SearchMode mode) {
         try {
             if (searchFor != null && searchFor.length() >= 1) {//todo vi ändra till minst en
                 List<Book> result = null;
@@ -48,6 +49,7 @@ public class Controller {
                             "No results found.", INFORMATION);
                 } else {
                     booksView.displayBooks(result);
+                    return result;
                 }
             } else {
                 booksView.showAlertAndWait(
@@ -56,6 +58,7 @@ public class Controller {
         } catch (Exception e) {
             booksView.showAlertAndWait("Database error.", ERROR);
         }
+        return null;
     }
 
     // TODO:
@@ -72,7 +75,9 @@ public class Controller {
         booksDb.connect("LibraryDB");
     }
 
-    protected void onAddSelected(String isbn, String title, Date published, String authorName) throws SQLException {
+    protected void onAddSelected(String isbn, String title, Date published, String authorName) throws SQLException, BooksDbException {
+        if (!isbn.matches("[0-9]+"))throw new BooksDbException("Isbn is not numbers");
+
         Book book =new Book(isbn,title,published);
         Author author =new Author(authorName);
         booksDb.insertBook(book);
@@ -94,7 +99,7 @@ public class Controller {
         booksDb.removeWrittenByIsbn(isbn);
     }
 
-    protected void onUpdateSelected(String oldIsbn, String newIsbn, String title, Date published, String authorName) throws SQLException {
+    protected void onUpdateSelected(String oldIsbn, String newIsbn, String title, Date published, String authorName) throws SQLException, BooksDbException {
         if (!oldIsbn.isEmpty()){//todo trow exception
             onRemoveSelected(oldIsbn);
             onAddSelected(newIsbn,title,published,authorName);
@@ -107,7 +112,9 @@ public class Controller {
         booksView.displayBooks(booksDb.getArrayListOfBooks());
     }
     public void onTest2Selected() throws SQLException {
-        booksDb.addAllBooksFromTableToArray();
+        for (int i = 0; i < 9; i++) {
+            booksDb.insertBook(DATA[i]);
+        }
     }
     public Book getBookFromDatabaseByIsbnController(String isbn) throws SQLException {
         return booksDb.getBookFromDatabaseByIsbn(isbn);

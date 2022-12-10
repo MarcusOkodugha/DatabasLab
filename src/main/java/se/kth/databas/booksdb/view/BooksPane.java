@@ -76,14 +76,11 @@ public class BooksPane extends VBox {
     }
 
     private void init(Controller controller) {
-
         booksInTable = FXCollections.observableArrayList();
-
         // init views and event handlers
         initBooksTable();
         initSearchView(controller);
         initMenus(controller);
-
         FlowPane bottomPane = new FlowPane();
         bottomPane.setHgap(10);
         bottomPane.setPadding(new Insets(10, 10, 10, 10));
@@ -129,7 +126,7 @@ public class BooksPane extends VBox {
         searchModeBox.setValue(SearchMode.Title);
         searchButton = new Button("Search");
         testButton = new Button("Show All Books");
-        testButton2 = new Button("Test2");
+        testButton2 = new Button("Dont press!!");
 
         // event handling (dispatch to controller)
         searchButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -240,6 +237,8 @@ public class BooksPane extends VBox {
                     showAddItemDialog(controller);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
+                } catch (BooksDbException e) {
+                    throw new RuntimeException(e);
                 }
             }
         });
@@ -260,6 +259,8 @@ public class BooksPane extends VBox {
                     showIsbnDialog(controller);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
+                } catch (BooksDbException e) {
+                    throw new RuntimeException(e);
                 }
             }
         });
@@ -273,7 +274,7 @@ public class BooksPane extends VBox {
         controller.onSearchSelected(textInputDialog.getEditor().getText(),searchMode);
     }
 
-    public void showAddItemDialog(Controller controller) throws SQLException {
+    public void showAddItemDialog(Controller controller) throws SQLException, BooksDbException {
         Dialog dialog = new Dialog<>();
         dialog.setTitle("Add Book");
         dialog.setHeaderText("Add Book");
@@ -301,9 +302,14 @@ public class BooksPane extends VBox {
         TextField isbnTextField = new TextField("Isbn");
         dialogPane.setContent(new VBox(8,isbnTextField));
         dialog.showAndWait();
-        controller.onRemoveSelected(isbnTextField.getText());
+        Optional<ButtonType> result = dialog.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            if (!controller.onSearchSelected(isbnTextField.getText(),SearchMode.ISBN).isEmpty()){
+                controller.onRemoveSelected(isbnTextField.getText());
+            }
+        }
     }
-    public void showIsbnDialog(Controller controller) throws SQLException {
+    public void showIsbnDialog(Controller controller) throws SQLException, BooksDbException {
         Dialog dialog = new Dialog<>();
         dialog.setTitle("Update Book");
         dialog.setHeaderText("Enter isbn of the book you want to update");
@@ -311,10 +317,15 @@ public class BooksPane extends VBox {
         dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
         TextField isbnTextField = new TextField("Isbn");
         dialogPane.setContent(new VBox(8,isbnTextField));
-        dialog.showAndWait();
-        showUpdateDialog(controller,isbnTextField.getText());
+//        dialog.showAndWait();
+        Optional<ButtonType> result = dialog.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            if (!controller.onSearchSelected(isbnTextField.getText(),SearchMode.ISBN).isEmpty()){
+                showUpdateDialog(controller,isbnTextField.getText());
+            }
+        }
     }
-        public void showUpdateDialog(Controller controller,String oldIsbn) throws SQLException {//todo
+        public void showUpdateDialog(Controller controller,String oldIsbn) throws SQLException, BooksDbException {//todo
         Dialog dialog = new Dialog<>();
         dialog.setTitle("Update book");
         dialog.setHeaderText("Update book");

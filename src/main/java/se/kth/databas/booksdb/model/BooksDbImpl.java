@@ -139,6 +139,8 @@ public class BooksDbImpl implements BooksDbInterface {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        if (result.isEmpty()) return null;
+
         return result;
     }
     @Override

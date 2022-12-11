@@ -1,6 +1,5 @@
 package se.kth.databas.booksdb.model;
 
-import java.sql.Array;
 import java.sql.Date;
 import java.util.ArrayList;
 
@@ -17,34 +16,25 @@ public class Book {
     private Date published;
     private String storyLine = "";
     private ArrayList<Author> authors;
-    private ArrayList<Genre> genresList;
     private int rating;
+    private Genre genre;
     // TODO:
     // Add authors, as a separate class(!), and corresponding methods, to your implementation
     // as well, i.e. "private ArrayList<Author> authors;"
-    public Book(int bookId, String isbn, String title, Date published, int rating) {
+    public Book(int bookId, String isbn, String title, Date published, int rating, Genre genre) {
         this.bookId = bookId;
         this.isbn = isbn;
         this.title = title;
         this.published = published;
         setValidISBN(isbn);
         authors = new ArrayList<>();
-        genresList = new ArrayList<>();
         this.rating = rating;
+        this.genre = genre;
     }
-    public Book(String isbn, String title, Date published, int rating) {
-        this(-1, isbn, title, published,rating);
-    }
-
-    public void addGenre(Genre genre){
-        if (genre!=null){
-            genresList.add(genre);
-        }
+    public Book(String isbn, String title, Date published, int rating, Genre genre) {
+        this(-1, isbn, title, published,rating, genre);
     }
 
-    public ArrayList<Genre> getGenresList() {
-        return (ArrayList<Genre>) genresList.clone();
-    }
 
     private void setValidISBN(String isbn){
         if(isbn.length() == 9){
@@ -74,7 +64,10 @@ public class Book {
     public String getStoryLine() {
         return storyLine;
     }
-    
+    public Genre getGenre() {
+        return genre;
+    }
+
     public void setStoryLine(String storyLine) {
         this.storyLine = storyLine;
     }
@@ -88,7 +81,6 @@ public class Book {
         }
     }
 
-
     @Override
     public String toString() {
         return "Book{" +
@@ -98,8 +90,8 @@ public class Book {
                 ", published=" + published +
                 ", storyLine='" + storyLine + '\'' +
                 ", authors=" + authors +
-                ", genresList=" + genresList +
                 ", rating=" + rating +
+                ", genre=" + genre +
                 '}';
     }
 }

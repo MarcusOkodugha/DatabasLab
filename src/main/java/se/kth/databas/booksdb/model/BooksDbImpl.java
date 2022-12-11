@@ -87,7 +87,7 @@ public class BooksDbImpl implements BooksDbInterface {
             ResultSet rs = stmt.executeQuery(query);
             // Get the attribute values
             while (rs.next()) {
-                Book nextBook = new Book(rs.getInt("bookId"),rs.getString("isbn"),rs.getString("title"),rs.getDate("published"),rs.getInt("rating"));
+                Book nextBook = new Book(rs.getInt("bookId"),rs.getString("isbn"),rs.getString("title"),rs.getDate("published"),rs.getInt("rating"),Genre.valueOf(rs.getString("genre")));
                  result.add(nextBook);
             }
         } catch (SQLException e) {
@@ -105,7 +105,7 @@ public class BooksDbImpl implements BooksDbInterface {
             ResultSet rs = stmt.executeQuery(query);
             // Get the attribute values
             while (rs.next()) {
-                Book nextBook = new Book(rs.getInt("bookId"),rs.getString("isbn"),rs.getString("title"),rs.getDate("published"),rs.getInt("rating"));
+                Book nextBook = new Book(rs.getInt("bookId"),rs.getString("isbn"),rs.getString("title"),rs.getDate("published"),rs.getInt("rating"),Genre.valueOf(rs.getString("genre")));
                 result.add(nextBook);
             }
         } catch (SQLException e) {
@@ -169,7 +169,7 @@ public class BooksDbImpl implements BooksDbInterface {
                 ResultSet rs = stmt.executeQuery(query);
                 // Get the attribute values
                 while (rs.next()) {
-                    Book nextBook = new Book(rs.getInt("bookId"),rs.getString("isbn"),rs.getString("title"),rs.getDate("published"),rs.getInt("rating"));
+                    Book nextBook = new Book(rs.getInt("bookId"),rs.getString("isbn"),rs.getString("title"),rs.getDate("published"),rs.getInt("rating"),Genre.valueOf(rs.getString("genre")));
                     bookResults.add(nextBook);
                 }
             } catch (SQLException e) {
@@ -186,18 +186,45 @@ public class BooksDbImpl implements BooksDbInterface {
             throw new RuntimeException(e);
         }
     }
+//    @Override
+//    public void insertBook(Book book) throws SQLException {//Takes a book and inserts to the database
+//        String bookIsbn= "\'"+book.getIsbn()+"\'";
+//        String bookTitle= "\'"+book.getTitle()+"\'";
+//        String bookDate= "\'"+book.getPublished().toString()+"\'";
+//        String bookStoryLine= "\"test Story Line\"";
+//        String rating= "\'"+book.getRating()+"\'";
+//          String sql= "INSERT into T_Book(isbn,title,published,storyLine,rating)VALUES ("+bookIsbn+","+bookTitle+","+bookDate+","+bookStoryLine+","+rating+");";
+//
+//        try (Statement stmt = con.createStatement()) {
+//            stmt.executeUpdate(sql);
+//        }
+//    }
     @Override
     public void insertBook(Book book) throws SQLException {//Takes a book and inserts to the database
-        String bookIsbn= "\'"+book.getIsbn()+"\'";
-        String bookTitle= "\'"+book.getTitle()+"\'";
-        String bookDate= "\'"+book.getPublished().toString()+"\'";
-        String bookStoryLine= "\"test Story Line\"";
-        String rating= "\'"+book.getRating()+"\'";
-          String sql= "INSERT into T_Book(isbn,title,published,storyLine,rating)VALUES ("+bookIsbn+","+bookTitle+","+bookDate+","+bookStoryLine+","+rating+");";
+        String sql = "INSERT into T_Book(isbn,title,published,storyLine,genre,rating)VALUES (?,?,?,?,?,?)";
+        PreparedStatement insertBook=con.prepareStatement(sql);
 
-        try (Statement stmt = con.createStatement()) {
-            stmt.executeUpdate(sql);
-        }
+        insertBook.setString(1, book.getIsbn());
+        insertBook.setString(2, book.getTitle());
+        insertBook.setString(3, book.getPublished().toString());
+        insertBook.setString(4, "test story line");
+        insertBook.setString(5, book.getGenre().toString());
+        insertBook.setInt(6,book.getRating());
+
+        int n = insertBook.executeUpdate();
+
+        System.out.println("book insert result "+n);
+
+//        String bookIsbn= "\'"+book.getIsbn()+"\'";
+//        String bookTitle= "\'"+book.getTitle()+"\'";
+//        String bookDate= "\'"+book.getPublished().toString()+"\'";
+//        String bookStoryLine= "\"test Story Line\"";
+//        String rating= "\'"+book.getRating()+"\'";
+//        String s= "INSERT into T_Book(isbn,title,published,storyLine,rating)VALUES ("+bookIsbn+","+bookTitle+","+bookDate+","+bookStoryLine+","+rating+");";
+
+//        try (Statement stmt = con.createStatement()) {
+//            stmt.executeUpdate(sql);
+//        }
     }
     @Override
     public void insertAuthor(Author author) {
@@ -251,7 +278,7 @@ public class BooksDbImpl implements BooksDbInterface {
             ResultSet rs = stmt.executeQuery(query);
             // Get the attribute values
             while (rs.next()) {
-                Book nextBook = new Book(rs.getInt("bookId"),rs.getString("isbn"),rs.getString("title"),rs.getDate("published"),rs.getInt("rating"));
+                Book nextBook = new Book(rs.getInt("bookId"),rs.getString("isbn"),rs.getString("title"),rs.getDate("published"),rs.getInt("rating"),Genre.valueOf(rs.getString("genre")));
                 arrayListOfBooks.add(nextBook);
             }
         }
@@ -276,15 +303,15 @@ public class BooksDbImpl implements BooksDbInterface {
     }
 
     public static final Book[] DATA = {
-            new Book(1, "123456789", "Databases Illuminated", new Date(2018, 1, 1),3),
-            new Book(2, "234567891", "Dark Databases", new Date(1990, 1, 1),4),
-            new Book(3, "456789012", "The buried giant", new Date(2000, 1, 1),2),
-            new Book(4, "567890123", "Never let me go", new Date(2000, 1, 1),4),
-            new Book(5, "678901234", "The remains of the day", new Date(2000, 1, 1),2),
-            new Book(6, "234567890", "Alias Grace", new Date(2000, 1, 1),1),
-            new Book(7, "345678911", "The handmaids tale", new Date(2010, 1, 1),3),
-            new Book(8, "345678901", "Shuggie Bain", new Date(2020, 1, 1),2),
-            new Book(9, "345678912", "Microserfs", new Date(2000, 1, 1),5),
+            new Book(1, "123456789", "Databases Illuminated", new Date(2018, 1, 1),3,Genre.ACADEMIC),
+            new Book(2, "234567891", "Dark Databases", new Date(1990, 1, 1),4,Genre.ACADEMIC),
+            new Book(3, "456789012", "The buried giant", new Date(2000, 1, 1),2,Genre.FICTION),
+            new Book(4, "567890123", "Never let me go", new Date(2000, 1, 1),4,Genre.FANTASY),
+            new Book(5, "678901234", "The remains of the day", new Date(2000, 1, 1),2,Genre.HISTORY),
+            new Book(6, "234567890", "Alias Grace", new Date(2000, 1, 1),1,Genre.SCI_FI),
+            new Book(7, "345678911", "The handmaids tale", new Date(2010, 1, 1),3,Genre.FICTION),
+            new Book(8, "345678901", "Shuggie Bain", new Date(2020, 1, 1),2,Genre.DRAMA),
+            new Book(9, "345678912", "Microserfs", new Date(2000, 1, 1),5,Genre.SCI_FI),
     };
 
     public ArrayList getArrayListOfBooks() {
@@ -308,7 +335,7 @@ public class BooksDbImpl implements BooksDbInterface {
         try (Statement stmt = con.createStatement()) {
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
-                nextBook = new Book(rs.getInt("bookId"),rs.getString("isbn"),rs.getString("title"),rs.getDate("published"),rs.getInt("rating"));
+                nextBook = new Book(rs.getInt("bookId"),rs.getString("isbn"),rs.getString("title"),rs.getDate("published"),rs.getInt("rating"),Genre.valueOf(rs.getString("genre")));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

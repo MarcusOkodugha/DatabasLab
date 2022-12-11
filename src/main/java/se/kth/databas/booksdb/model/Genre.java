@@ -1,47 +1,9 @@
 package se.kth.databas.booksdb.model;
 
-import java.util.ArrayList;
-//todo ta bort klass
-public class Genre {
-    private int genreId;
-    private String genreName;
-    private ArrayList<Book> books;
-    public void setGenreId(int genreId) {
-        this.genreId = genreId;
-        this.books = new ArrayList<>();
-    }
-    public void addBook(Book book){
-        if (book!=null){
-            books.add(book);
-        }
-    }
+public enum Genre {
+   NO_GENRE("NO_GENRE"),SCI_FI("SCI_FI"), DRAMA("DRAMA"), FANTASY("FANTASY"), FICTION("FICTION"), HISTORY("HISTORY"),ACADEMIC("ACADEMIC");
 
-    public ArrayList<Book> getBooks() {
-        return (ArrayList<Book>) books.clone();
-    }
+   Genre(String genres) {
+   }
 
-    public void setGenreName(String genreName) {
-        this.genreName = genreName;
-    }
-
-    public int getGenreId() {
-        return genreId;
-    }
-
-    public String getGenreName() {
-        return genreName;
-    }
-
-    public Genre(int genreId, String genreName) {
-        this.genreId = genreId;
-        this.genreName = genreName;
-    }
-
-    @Override
-    public String toString() {
-        return "Genre{" +
-                "genreId=" + genreId +
-                ", genreName='" + genreName + '\'' +
-                '}';
-    }
 }

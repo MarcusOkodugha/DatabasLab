@@ -99,8 +99,9 @@ public class BooksPane extends VBox {
         TableColumn<Book, String> titleCol = new TableColumn<>("Title");
         TableColumn<Book, String> isbnCol = new TableColumn<>("ISBN");
         TableColumn<Book, Date> publishedCol = new TableColumn<>("Published");
+        TableColumn<Book, Date> genreCol = new TableColumn<>("Genre");
         TableColumn<Book, Date> ratingCol = new TableColumn<>("Rating");
-        booksTable.getColumns().addAll(titleCol, isbnCol, publishedCol,ratingCol);
+        booksTable.getColumns().addAll(titleCol, isbnCol, publishedCol,genreCol,ratingCol);
         // give title column some extra space
         titleCol.prefWidthProperty().bind(booksTable.widthProperty().multiply(0.5));
 
@@ -109,6 +110,7 @@ public class BooksPane extends VBox {
         titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
         isbnCol.setCellValueFactory(new PropertyValueFactory<>("isbn"));
         publishedCol.setCellValueFactory(new PropertyValueFactory<>("published"));
+        genreCol.setCellValueFactory(new PropertyValueFactory<>("genre"));
         ratingCol.setCellValueFactory(new PropertyValueFactory<>("rating"));
 
         // associate the table view with the data
@@ -287,9 +289,9 @@ public class BooksPane extends VBox {
         ratingOptions.addAll(1,2,3,4,5);
         ComboBox<Integer> ratingComboBox = new ComboBox<>(ratingOptions);
         ratingComboBox.getSelectionModel().selectFirst();
-        ObservableList<Genres> genreOptions = FXCollections.observableArrayList();
-        genreOptions.addAll(Arrays.asList(Genres.values()));
-        ComboBox<Genres> genreComboBox = new ComboBox<>(genreOptions);
+        ObservableList<Genre> genreOptions = FXCollections.observableArrayList();
+        genreOptions.addAll(Arrays.asList(Genre.values()));
+        ComboBox<Genre> genreComboBox = new ComboBox<>(genreOptions);
         genreComboBox.getSelectionModel().selectFirst();
 
         GridPane gridPane = initGridPane(titleTextField, isbnTextField, authorNameTextField, datePicker,genreComboBox,ratingComboBox);
@@ -302,7 +304,7 @@ public class BooksPane extends VBox {
         System.out.println("combo box value "+ratingComboBox.getValue());//todo remove print
         System.out.println("rating box value "+genreComboBox.getValue());
         Date date = Date.valueOf(datePicker.getEditor().getText());
-        controller.onAddSelected(isbnTextField.getText(),titleTextField.getText(),date,authorNameTextField.getText(),ratingComboBox.getValue());
+        controller.onAddSelected(isbnTextField.getText(),titleTextField.getText(),date,authorNameTextField.getText(),ratingComboBox.getValue(),genreComboBox.getValue());
     }
     public void showRemoveDialog(Controller controller) throws SQLException {
         Dialog dialog = new Dialog<>();
@@ -352,9 +354,9 @@ public class BooksPane extends VBox {
             ComboBox<Integer> ratingComboBox = new ComboBox<>(ratingOptions);
             ratingComboBox.getSelectionModel().selectFirst();
 
-            ObservableList<Genres> genreOptions = FXCollections.observableArrayList();
-            genreOptions.addAll(Arrays.asList(Genres.values()));
-            ComboBox<Genres> genreComboBox = new ComboBox<>(genreOptions);
+            ObservableList<Genre> genreOptions = FXCollections.observableArrayList();
+            genreOptions.addAll(Arrays.asList(Genre.values()));
+            ComboBox<Genre> genreComboBox = new ComboBox<>(genreOptions);
             genreComboBox.getSelectionModel().selectFirst();
 
             TextField titleTextField = new TextField(selectedBook.getTitle());
@@ -373,11 +375,11 @@ public class BooksPane extends VBox {
                 Optional<ButtonType> result = dialog.showAndWait();
                 if (result.isPresent() && result.get() == ButtonType.OK){
                     Date date = Date.valueOf(datePicker.getEditor().getText());
-                    controller.onUpdateSelected(oldIsbn,isbnTextField.getText(),titleTextField.getText(),date,authorNameTextField.getText(),ratingComboBox.getValue());
+                    controller.onUpdateSelected(oldIsbn,isbnTextField.getText(),titleTextField.getText(),date,authorNameTextField.getText(),ratingComboBox.getValue(),genreComboBox.getValue());
                 }
     }
 
-    private GridPane initGridPane( TextField titleTextField, TextField isbnTextField, TextField authorNameTextField, DatePicker datePicker,ComboBox<Genres> genreComboBox,ComboBox<Integer> ratingComboBox) {
+    private GridPane initGridPane(TextField titleTextField, TextField isbnTextField, TextField authorNameTextField, DatePicker datePicker, ComboBox<Genre> genreComboBox, ComboBox<Integer> ratingComboBox) {
         Label titleLabel = new Label("Title");
         Label isbnLabel = new Label("Isbn");
         Label authorLabel = new Label("Author");

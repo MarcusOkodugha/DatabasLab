@@ -81,14 +81,14 @@ public class Controller {
         booksDb.connect("LibraryDB");
     }
 
-    protected void onAddSelected(String isbn, String title, Date published, String authorName, int rating) throws SQLException, BooksDbException {
+    protected void onAddSelected(String isbn, String title, Date published, String authorName, int rating, Genre genre) throws SQLException, BooksDbException {
         new Thread(() -> {
             if (!isbn.matches("[0-9]+")) try {
                 throw new BooksDbException("Isbn is not numbers");
             } catch (BooksDbException e) {
                 throw new RuntimeException(e);
             }
-            Book book = new Book(isbn, title, published,rating);
+            Book book = new Book(isbn, title, published,rating, genre);
             Author author = new Author(authorName);
             try {
                 booksDb.insertBook(book);
@@ -127,10 +127,10 @@ public class Controller {
         }).start();
     }
 
-    protected void onUpdateSelected(String oldIsbn, String newIsbn, String title, Date published, String authorName,int rating) throws SQLException, BooksDbException {
+    protected void onUpdateSelected(String oldIsbn, String newIsbn, String title, Date published, String authorName,int rating,Genre genre) throws SQLException, BooksDbException {
         if (!oldIsbn.isEmpty()){//todo trow exception
             onRemoveSelected(oldIsbn);
-            onAddSelected(newIsbn,title,published,authorName,rating);
+            onAddSelected(newIsbn,title,published,authorName,rating,genre);
         }
     }
 

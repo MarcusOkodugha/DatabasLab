@@ -4,12 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29cf49d2-d410-47cd-96e9-acc5f247a89a" name="Changes" comment="Genre addat&#10;bettre säkrare insert statments">
+    <list default="true" id="29cf49d2-d410-47cd-96e9-acc5f247a89a" name="Changes" comment="tagit bort delat duplicate show">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/Author.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/Author.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/Book.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/Book.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/BooksDbImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/BooksDbImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/BooksDbInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/BooksDbInterface.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/view/BooksPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/view/BooksPane.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/view/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/view/Controller.java" afterDir="false" />
     </list>
@@ -112,7 +112,10 @@
       <workItem from="1670319064121" duration="22410000" />
       <workItem from="1670678907527" duration="25944000" />
       <workItem from="1670751942475" duration="5443000" />
-      <workItem from="1670768521686" duration="3555000" />
+      <workItem from="1670768521686" duration="14452000" />
+      <workItem from="1670785242246" duration="1673000" />
+      <workItem from="1670786952071" duration="44000" />
+      <workItem from="1670787017654" duration="10361000" />
     </task>
     <task id="LOCAL-00001" summary="lets go">
       <created>1669821712566</created>
@@ -212,7 +215,14 @@
       <option name="project" value="LOCAL" />
       <updated>1670756635143</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="tagit bort delat duplicate show">
+      <created>1670772115133</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1670772115133</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -242,7 +252,8 @@
     <MESSAGE value="innan trådar" />
     <MESSAGE value="mycket nytt: &#10;rating&#10;trådar&#10;genre&#10;comboboxes&#10;..." />
     <MESSAGE value="Genre addat&#10;bettre säkrare insert statments" />
-    <option name="LAST_COMMIT_MESSAGE" value="Genre addat&#10;bettre säkrare insert statments" />
+    <MESSAGE value="tagit bort delat duplicate show" />
+    <option name="LAST_COMMIT_MESSAGE" value="tagit bort delat duplicate show" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

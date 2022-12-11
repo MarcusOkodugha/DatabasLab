@@ -1,5 +1,6 @@
 package se.kth.databas.booksdb.model;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 
@@ -11,7 +12,17 @@ public class Author {
     private int authorId;
     private String authorName;
     private ArrayList<Book> books;
-        /**
+    private Date dob;
+
+     public Date getDob() {
+         return dob;
+     }
+
+     public void setDob(Date dob) {
+         this.dob = dob;
+     }
+
+     /**
          * constructor takes two parameters
          * @param authorId
          * @param authorName

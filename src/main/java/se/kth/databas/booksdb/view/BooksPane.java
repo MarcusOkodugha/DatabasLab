@@ -3,6 +3,7 @@ package se.kth.databas.booksdb.view;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -133,7 +134,7 @@ public class BooksPane extends VBox {
             public void handle(ActionEvent event) {
                 String searchFor = searchField.getText();
                 SearchMode mode = searchModeBox.getValue();
-                controller.onSearchSelected(searchFor, mode);
+                controller.onSearchSelected(searchFor, mode,true);
             }
         });
         testButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -270,7 +271,7 @@ public class BooksPane extends VBox {
         TextInputDialog textInputDialog = new TextInputDialog(sType);
         textInputDialog.setHeaderText("Search for "+sType);
         textInputDialog.showAndWait();
-        controller.onSearchSelected(textInputDialog.getEditor().getText(),searchMode);
+        controller.onSearchSelected(textInputDialog.getEditor().getText(),searchMode,true);
     }
 
     public void showAddItemDialog(Controller controller) throws SQLException, BooksDbException {
@@ -299,12 +300,20 @@ public class BooksPane extends VBox {
         VBox vBox =new VBox(8,gridPane);
         vBox.setPadding(new Insets(20,20,20,20));
         dialogPane.setContent(vBox);
-        dialog.showAndWait();
 
-        System.out.println("combo box value "+ratingComboBox.getValue());//todo remove print
-        System.out.println("rating box value "+genreComboBox.getValue());
-        Date date = Date.valueOf(datePicker.getEditor().getText());
-        controller.onAddSelected(isbnTextField.getText(),titleTextField.getText(),date,authorNameTextField.getText(),ratingComboBox.getValue(),genreComboBox.getValue());
+//        dialog.showAndWait();
+        Optional<ButtonType> result = dialog.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK){
+            if (isbnTextField.getText().equals("Isbn") || isbnTextField.getText().equals("")){
+                showAlertAndWait("Invalid isbn", Alert.AlertType.WARNING);
+                dialog.showAndWait();
+            }
+
+            Date date = Date.valueOf(datePicker.getEditor().getText());
+            controller.onAddSelected(isbnTextField.getText(),titleTextField.getText(),date,authorNameTextField.getText(),ratingComboBox.getValue(),genreComboBox.getValue());
+
+
+        }
     }
     public void showRemoveDialog(Controller controller) throws SQLException {
         Dialog dialog = new Dialog<>();
@@ -316,7 +325,11 @@ public class BooksPane extends VBox {
         dialogPane.setContent(new VBox(8,isbnTextField));
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            controller.onSearchSelected(isbnTextField.getText(),SearchMode.ISBN);
+            if(isbnTextField.getText().equals("Isbn") || isbnTextField.getText().equals("")){
+                showAlertAndWait("Invalid isbn", Alert.AlertType.WARNING);
+                return;
+            }
+            controller.onSearchSelected(isbnTextField.getText(),SearchMode.ISBN,false);
             if (!booksInTable.isEmpty()){
                 controller.onRemoveSelected(isbnTextField.getText());
             }
@@ -333,15 +346,14 @@ public class BooksPane extends VBox {
 //        dialog.showAndWait();
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            controller.onSearchSelected(isbnTextField.getText(),SearchMode.ISBN);
+            controller.onSearchSelected(isbnTextField.getText(),SearchMode.ISBN,true);
             if (!booksInTable.isEmpty()){
-
                 controller.getBookFromDatabaseByIsbnController(controller,isbnTextField.getText());
 
             }
         }
     }
-        public void showUpdateDialog(Controller controller,String oldIsbn) throws SQLException, BooksDbException {//todo
+        public void showUpdateDialog(Controller controller,String oldIsbn) throws SQLException, BooksDbException {
             Dialog dialog = new Dialog<>();
             dialog.setTitle("Update book");
             dialog.setHeaderText("Update book");
@@ -365,16 +377,23 @@ public class BooksPane extends VBox {
 
             GridPane gridPane = initGridPane(titleTextField, isbnTextField, authorNameTextField, datePicker,genreComboBox,ratingComboBox);
 
-            
+
             VBox vBox =new VBox(8,gridPane);
             vBox.setPadding(new Insets(20,20,20,20));
 
             dialogPane.setContent(vBox);
                 Optional<ButtonType> result = dialog.showAndWait();
                 if (result.isPresent() && result.get() == ButtonType.OK){
+                    if (isbnTextField.getText().equals("Isbn") || isbnTextField.getText().equals("")){
+                        showAlertAndWait("Invalid isbn", Alert.AlertType.WARNING);
+                        return;
+                    }
                     Date date = Date.valueOf(datePicker.getEditor().getText());
                     controller.onUpdateSelected(oldIsbn,isbnTextField.getText(),titleTextField.getText(),date,authorNameTextField.getText(),ratingComboBox.getValue(),genreComboBox.getValue());
                 }
+
+
+
     }
 
     private GridPane initGridPane(TextField titleTextField, TextField isbnTextField, TextField authorNameTextField, DatePicker datePicker, ComboBox<Genre> genreComboBox, ComboBox<Integer> ratingComboBox) {
@@ -405,6 +424,8 @@ public class BooksPane extends VBox {
 
         return gridPane;
     }
+
+
 
 
 }

@@ -1,5 +1,6 @@
 package se.kth.databas.booksdb.model;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,15 +35,10 @@ public interface BooksDbInterface {
 
     public List<Book> searchBookByAuthorQuery(String searchSting);
 
-    // TODO: Add abstract methods for all inserts, deletes and queries 
-    // mentioned in the instructions for the assignement.
-    public void executeQuery(String query) throws SQLException;
-
-    public void sqlInjection(String sql);
 
     public void insertBook(Book book) throws SQLException;
-    public void insertAuthor(Author author);
-    public void insertWritten(Written written);
+    public void insertAuthor(Author author) throws SQLException;
+    public void insertWritten(Written written) throws SQLException;
 
     public void removeBookByIsbn(String isbn) throws SQLException;
 
@@ -51,4 +47,7 @@ public interface BooksDbInterface {
     public int getMaxAuthorIdFromDatabase() throws SQLException;
     public ArrayList getArrayListOfBooks();
     public Book getBookFromDatabaseByIsbn(String isbn) throws SQLException;
+
+    public void onAddSelectedTransaction(String isbn, String title, Date published, String authorString, int rating, Genre genre) throws SQLException;
+    public void onRemoveSelectedTransaction(String isbn) throws SQLException;
 }

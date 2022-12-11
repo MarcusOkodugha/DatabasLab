@@ -67,7 +67,10 @@ public class BooksDbImpl implements BooksDbInterface {
         }
         return true;
     }
-
+    /**
+     *When clicking on disconnect button this method will run
+     *Disconnects from database
+    */
     @Override
     public void disconnect() throws BooksDbException {
         // mock implementation
@@ -80,7 +83,11 @@ public class BooksDbImpl implements BooksDbInterface {
         }
 
     }
-
+    /**
+     * Returns a list of the books that were brought from the database
+     * Creates a new book object for every book found in the database, adds it to the arraylist
+     * The query is done by selecting all matching titles from our database table T_Book
+    */
     @Override
     public List<Book> searchBooksByTitleQuery(String searchSting){
         String query="SELECT * FROM T_Book WHERE title LIKE"+"\'"+searchSting+"%\'";
@@ -98,7 +105,10 @@ public class BooksDbImpl implements BooksDbInterface {
         }
         return result;
     }
-
+    /**
+     * Returns a list of all the brought books from the database
+     * The query selects all the matching books, matched after our search string which is the isbn
+    */
     @Override
     public List<Book> searchBooksByIsbnQuery(String searchSting){
         String query="SELECT * FROM T_Book WHERE isbn LIKE"+"\'"+searchSting+"%\'";
@@ -118,6 +128,12 @@ public class BooksDbImpl implements BooksDbInterface {
 
         return result;
     }
+    /**
+     * Returns a list of all the brought books from the database
+     * The query selects all the matching books, matched after our search string which is the author
+     * Since there is a many-to-many relationship between author and book it is shown by also using a Written list
+     * Adds all author, book and writtenBy tuples to seperate lists
+    */
     @Override
     public List<Book> searchBookByAuthorQuery(String searchSting){
         String query="SELECT * FROM T_Author WHERE authorName LIKE"+"\'"+searchSting+"%\'";
@@ -133,6 +149,9 @@ public class BooksDbImpl implements BooksDbInterface {
 
         return bookResults;
     }
+    /**
+     * adds the next author to the list, gets the daata from the table T_Author
+    */
     private void addAuthorResults(String query, List<Author> authorResults) {
         try (Statement stmt = con.createStatement()) {
             // Execute the SQL statement
@@ -146,6 +165,10 @@ public class BooksDbImpl implements BooksDbInterface {
             throw new RuntimeException(e);
         }
     }
+    /**
+     * Retrieves all the data from the written_by table and adds it to the list writtenResults
+     * Loops through all the authors, gets each authors id and uses it for the query to retrieve data
+    */
     private void addWrittenResults(List<Author> authorResults, List<Written> writtenResults) {
         String query;
         for (Author a: authorResults) {
@@ -164,6 +187,10 @@ public class BooksDbImpl implements BooksDbInterface {
             }
         }
     }
+    /**
+     * goes through all the tuples in writtenby table and runs a query after the isbn each tuple has
+     * Retrieves all the books that match, adds them to the arrayList bookResults
+    */
     private void addBookResults(List<Written> writtenResults, List<Book> bookResults){
         for (Written w:writtenResults) {
             String query="SELECT * FROM T_Book WHERE isbn LIKE"+"\'"+w.getIsbn()+"%\'";
@@ -181,27 +208,12 @@ public class BooksDbImpl implements BooksDbInterface {
         }
     }
 
-    @Override
-    public void sqlInjection(String sql) {
-        try (Statement stmt = con.createStatement()) {
-            stmt.executeUpdate(sql);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-//    @Override
-//    public void insertBook(Book book) throws SQLException {//Takes a book and inserts to the database
-//        String bookIsbn= "\'"+book.getIsbn()+"\'";
-//        String bookTitle= "\'"+book.getTitle()+"\'";
-//        String bookDate= "\'"+book.getPublished().toString()+"\'";
-//        String bookStoryLine= "\"test Story Line\"";
-//        String rating= "\'"+book.getRating()+"\'";
-//          String sql= "INSERT into T_Book(isbn,title,published,storyLine,rating)VALUES ("+bookIsbn+","+bookTitle+","+bookDate+","+bookStoryLine+","+rating+");";
-//
-//        try (Statement stmt = con.createStatement()) {
-//            stmt.executeUpdate(sql);
-//        }
-//    }
+
+    /**
+     * Insert query to insert a new book into the T_Book table with all its attributes
+     * Insert a book object from java, use the Book class getter methods to insert its values
+     * PreparedStatement is used to prevent SQl-injections
+    */
     @Override
     public void insertBook(Book book) throws SQLException {//Takes a book and inserts to the database
         String sql = "INSERT into T_Book(isbn,title,published,storyLine,genre,rating)VALUES (?,?,?,?,?,?)";
@@ -216,62 +228,66 @@ public class BooksDbImpl implements BooksDbInterface {
 
         int n = insertBook.executeUpdate();
 
-        System.out.println("book insert result "+n);
 
-//        String bookIsbn= "\'"+book.getIsbn()+"\'";
-//        String bookTitle= "\'"+book.getTitle()+"\'";
-//        String bookDate= "\'"+book.getPublished().toString()+"\'";
-//        String bookStoryLine= "\"test Story Line\"";
-//        String rating= "\'"+book.getRating()+"\'";
-//        String s= "INSERT into T_Book(isbn,title,published,storyLine,rating)VALUES ("+bookIsbn+","+bookTitle+","+bookDate+","+bookStoryLine+","+rating+");";
-
-//        try (Statement stmt = con.createStatement()) {
-//            stmt.executeUpdate(sql);
-//        }
     }
+    /**
+     * SQL query to add an author row to our T_Author table
+     * Author is represented as a class in java, use its getter methods to add the proper values to that specific object to the table
+    */
     @Override
-    public void insertAuthor(Author author) {
-        String authorId= "\'"+author.getAuthorId()+"\'";
-        String authorName= "\'"+author.getAuthorName()+"\'";
-        String sql= "INSERT into T_Author(authorId,authorName)VALUES ("+authorId+","+authorName+");";
+    public void insertAuthor(Author author) throws SQLException {
 
-        try (Statement stmt = con.createStatement()) {
-            stmt.executeUpdate(sql);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        String sql= "INSERT into T_Author(authorId,authorName,dob)VALUES (?,?,?);";
+        PreparedStatement insertAuthor=con.prepareStatement(sql);
+        insertAuthor.setString(1, String.valueOf(author.getAuthorId()));
+        insertAuthor.setString(2, author.getAuthorName());
+        insertAuthor.setString(3, author.getDob().toString());
+
+        int n = insertAuthor.executeUpdate();
+
+
     }
-    public void insertWritten(Written written) {
-        String authorId= "\'"+written.getAuthorId()+"\'";
-        String bookIsbn= "\'"+written.getIsbn()+"\'";
-        String sql= "INSERT into T_Written(authorId,isbn)VALUES ("+authorId+","+bookIsbn+");";
-        try (Statement stmt = con.createStatement()) {
-            stmt.executeUpdate(sql);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    /**
+     * SQL query to add who a book is written by to the T_Written table
+     * Written class getters used to get the proper values
+     * This method is needed in the controller class when adding a book for the many-to-many relationship between author and book
+    */
+    public void insertWritten(Written written) throws SQLException {
+        String sql= "INSERT into T_Written(authorId,isbn)VALUES (?,?);";
+        PreparedStatement insertWritten=con.prepareStatement(sql);
+        insertWritten.setString(1, String.valueOf(written.getAuthorId()));
+        insertWritten.setString(2, written.getIsbn());
+        int n = insertWritten.executeUpdate();
+        insertWritten.close();
+
     }
+    /**
+     * SQL delete query to remove a book based on its isbn
+    */
     public void removeBookByIsbn(String isbn) throws SQLException {
         String query="DELETE FROM T_Book WHERE isbn="+isbn;
         executeUpdate(query);
     }
+    /**
+     * SQL delete query to remove writtenBy based on book isbn
+    */
     public void removeWrittenByIsbn(String isbn) throws SQLException {
         String query="DELETE FROM T_Written WHERE isbn="+isbn;
         executeUpdate(query);
     }
+    /**
+     * Made this into a method for future reuse, used to execute an update to the database
+    */
     private void executeUpdate(String query) throws SQLException {
         try (Statement stmt = con.createStatement()) {
             stmt.executeUpdate(query);
         }
     }
-//    private ResultSet executeAndGetQueryResults(String query) throws SQLException {
-//        ResultSet rs;
-//        try (Statement stmt = con.createStatement()) {
-//            rs = stmt.executeQuery(query);
-//        }
-//        return rs;
-//    }
 
+    /**
+     * Adds every single book from the table T_Book into an array using the query seen down below
+     * Creates book objects based on retrieved data and adds them to the list
+    */
     @Override
     public void addAllBooksFromTableToArray() throws SQLException {
         arrayListOfBooks.clear();
@@ -287,24 +303,10 @@ public class BooksDbImpl implements BooksDbInterface {
         }
     }
 
-    @Override
-    public void executeQuery(String query) throws SQLException {
-        try (Statement stmt = con.createStatement()) {
-            ResultSet rs = stmt.executeQuery(query);
-            ResultSetMetaData metaData = rs.getMetaData();
-            int ccount = metaData.getColumnCount();
-            for (int c = 1; c <= ccount; c++) {
-                System.out.print(metaData.getColumnName(c) + "\t");
-            }
-            while (rs.next()) {
-                for (int c = 1; c <= ccount; c++) {
-                    System.out.print(rs.getObject(c) + "\t");
-                }
 
-            }
-        }
-    }
-
+    /**
+     * Static data, several books with all their attributes
+    */
     public static final Book[] DATA = {
             new Book(1, "123456789", "Databases Illuminated", new Date(2018, 1, 1),3,Genre.ACADEMIC),
             new Book(2, "234567891", "Dark Databases", new Date(1990, 1, 1),4,Genre.ACADEMIC),
@@ -317,11 +319,15 @@ public class BooksDbImpl implements BooksDbInterface {
             new Book(9, "345678912", "Microserfs", new Date(2000, 1, 1),5,Genre.SCI_FI),
             new Book(1, "111111111", "Lord of the rings", Date.valueOf(LocalDate.now()),5,Genre.FANTASY),
     };
-
+    /**
+     * Returns a clone of the list containing all books from T_Book table
+    */
     public ArrayList getArrayListOfBooks() {
-        return arrayListOfBooks;
+        return (ArrayList) arrayListOfBooks.clone();
     }
-
+    /**
+     * Query run to get the highest author id in database
+    */
     public int getMaxAuthorIdFromDatabase() throws SQLException {
         int result = 0;
         String query = "SELECT MAX(authorId) FROM T_Author";
@@ -333,7 +339,11 @@ public class BooksDbImpl implements BooksDbInterface {
         }
         return result;
     }
-    public Book getBookFromDatabaseByIsbn(String isbn) throws SQLException {
+    /**
+     * Runs a query on T_Book table to retrieve a book from database based on ISBN
+     * Returns the book object once it has all the corresponding attributes retrieved from the table
+    */
+    public Book getBookFromDatabaseByIsbn(String isbn) throws SQLException   {
         String query="SELECT * FROM T_Book WHERE isbn="+isbn;
         Book nextBook = null;
         try (Statement stmt = con.createStatement()) {
@@ -345,6 +355,89 @@ public class BooksDbImpl implements BooksDbInterface {
             throw new RuntimeException(e);
         }
         return nextBook;
+    }
+
+    public void onAddSelectedTransaction(String isbn, String title, Date published, String authorString, int rating, Genre genre) throws SQLException {
+
+        try {
+            con.setAutoCommit(false);
+            if (!isbn.matches("[0-9]+")) try {
+                throw new BooksDbException("Isbn is not numbers");
+            } catch (BooksDbException e) {
+                throw new RuntimeException(e);
+            }
+            Book book = new Book(isbn, title, published,rating, genre);
+
+            List<String> list = new ArrayList<String>(Arrays.asList(authorString.split(",")));
+            ArrayList<Author> authorArrayList =new ArrayList<>();
+            for (String s:list) {
+                authorArrayList.add(new Author(s));
+            }
+            try {
+                insertBook(book);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            for (Author author:authorArrayList) {
+                author.setDob(Date.valueOf(LocalDate.now()));
+                try {
+                    insertAuthor(author);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
+                    author.setAuthorId(getMaxAuthorIdFromDatabase());
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+
+                author.addBook(book);
+                book.addAuthor(author);
+                Written written = new Written(author.getAuthorId(), book.getIsbn());
+                try {
+                    insertWritten(written);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+//            System.out.println(book);
+            con.commit();
+        }
+        catch (SQLException e) {
+            if (con != null) con.rollback();
+            throw e;
+        }
+        finally {
+            con.setAutoCommit(true);
+        }
+
+    }
+
+    public void onRemoveSelectedTransaction(String isbn) throws SQLException {
+        try {
+            con.setAutoCommit(false);
+            try {
+                removeBookByIsbn(isbn);
+            } catch (SQLException e) {
+                throw new RuntimeException("book not removed correctly");
+            }
+            try {
+                removeWrittenByIsbn(isbn);
+            } catch (SQLException e) {
+                throw new RuntimeException("written by not remove");
+            }
+            con.commit();
+        }
+        catch (Exception e) {
+            if (con != null) con.rollback();
+            throw e;
+        }
+        finally {
+            con.setAutoCommit(true);
+        }
+
+
+
     }
 
 }

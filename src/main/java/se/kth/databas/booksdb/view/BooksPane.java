@@ -3,29 +3,19 @@ package se.kth.databas.booksdb.view;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import se.kth.databas.booksdb.model.Book;
-import se.kth.databas.booksdb.model.BooksDbException;
-import se.kth.databas.booksdb.model.BooksDbImpl;
-import se.kth.databas.booksdb.model.SearchMode;
+import javafx.scene.layout.*;
+import se.kth.databas.booksdb.model.*;
 
 
 /**
@@ -44,6 +34,7 @@ public class BooksPane extends VBox {
     private Button searchButton;
     private Button testButton;
     private Button testButton2;
+    private Book selectedBook;
 
     private MenuBar menuBar;
 
@@ -62,7 +53,11 @@ public class BooksPane extends VBox {
         booksInTable.clear();
         booksInTable.addAll(books);
     }
-    
+
+    public void setSelectedBook(Book selectedBook) {
+        this.selectedBook = selectedBook;
+    }
+
     /**
      * Notify user on input error or exceptions.
      * 
@@ -104,7 +99,8 @@ public class BooksPane extends VBox {
         TableColumn<Book, String> titleCol = new TableColumn<>("Title");
         TableColumn<Book, String> isbnCol = new TableColumn<>("ISBN");
         TableColumn<Book, Date> publishedCol = new TableColumn<>("Published");
-        booksTable.getColumns().addAll(titleCol, isbnCol, publishedCol);
+        TableColumn<Book, Date> ratingCol = new TableColumn<>("Rating");
+        booksTable.getColumns().addAll(titleCol, isbnCol, publishedCol,ratingCol);
         // give title column some extra space
         titleCol.prefWidthProperty().bind(booksTable.widthProperty().multiply(0.5));
 
@@ -113,7 +109,8 @@ public class BooksPane extends VBox {
         titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
         isbnCol.setCellValueFactory(new PropertyValueFactory<>("isbn"));
         publishedCol.setCellValueFactory(new PropertyValueFactory<>("published"));
-        
+        ratingCol.setCellValueFactory(new PropertyValueFactory<>("rating"));
+
         // associate the table view with the data
         booksTable.setItems(booksInTable);
     }
@@ -280,18 +277,32 @@ public class BooksPane extends VBox {
         dialog.setHeaderText("Add Book");
         DialogPane dialogPane = dialog.getDialogPane();
         dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
         TextField titleTextField = new TextField("Title");
         TextField isbnTextField = new TextField("Isbn");
         TextField authorNameTextField = new TextField("Author name");
         DatePicker datePicker = new DatePicker(LocalDate.now());
-        ObservableList options = FXCollections.observableArrayList();
-//        ComboBox comboBox = new ComboBox<>(options);//todo implementer för genra
-//        comboBox.getSelectionModel().selectFirst();
-            //comboBox.getValue()
-        dialogPane.setContent(new VBox(8,titleTextField,authorNameTextField,isbnTextField, datePicker));
+
+        ObservableList<Integer> ratingOptions = FXCollections.observableArrayList();
+        ratingOptions.addAll(1,2,3,4,5);
+        ComboBox<Integer> ratingComboBox = new ComboBox<>(ratingOptions);
+        ratingComboBox.getSelectionModel().selectFirst();
+        ObservableList<Genres> genreOptions = FXCollections.observableArrayList();
+        genreOptions.addAll(Arrays.asList(Genres.values()));
+        ComboBox<Genres> genreComboBox = new ComboBox<>(genreOptions);
+        genreComboBox.getSelectionModel().selectFirst();
+
+        GridPane gridPane = initGridPane(titleTextField, isbnTextField, authorNameTextField, datePicker,genreComboBox,ratingComboBox);
+
+        VBox vBox =new VBox(8,gridPane);
+        vBox.setPadding(new Insets(20,20,20,20));
+        dialogPane.setContent(vBox);
         dialog.showAndWait();
+
+        System.out.println("combo box value "+ratingComboBox.getValue());//todo remove print
+        System.out.println("rating box value "+genreComboBox.getValue());
         Date date = Date.valueOf(datePicker.getEditor().getText());
-        controller.onAddSelected(isbnTextField.getText(),titleTextField.getText(),date,authorNameTextField.getText());
+        controller.onAddSelected(isbnTextField.getText(),titleTextField.getText(),date,authorNameTextField.getText(),ratingComboBox.getValue());
     }
     public void showRemoveDialog(Controller controller) throws SQLException {
         Dialog dialog = new Dialog<>();
@@ -304,7 +315,8 @@ public class BooksPane extends VBox {
         dialog.showAndWait();
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            if (!controller.onSearchSelected(isbnTextField.getText(),SearchMode.ISBN).isEmpty()){
+            controller.onSearchSelected(isbnTextField.getText(),SearchMode.ISBN);
+            if (!booksInTable.isEmpty()){
                 controller.onRemoveSelected(isbnTextField.getText());
             }
         }
@@ -320,26 +332,78 @@ public class BooksPane extends VBox {
 //        dialog.showAndWait();
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            if (!controller.onSearchSelected(isbnTextField.getText(),SearchMode.ISBN).isEmpty()){
-                showUpdateDialog(controller,isbnTextField.getText());
+            controller.onSearchSelected(isbnTextField.getText(),SearchMode.ISBN);
+            if (!booksInTable.isEmpty()){
+
+                controller.getBookFromDatabaseByIsbnController(controller,isbnTextField.getText());
+
             }
         }
     }
         public void showUpdateDialog(Controller controller,String oldIsbn) throws SQLException, BooksDbException {//todo
-        Dialog dialog = new Dialog<>();
-        dialog.setTitle("Update book");
-        dialog.setHeaderText("Update book");
-        DialogPane dialogPane = dialog.getDialogPane();
-        dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-        TextField titleTextField = new TextField(controller.getBookFromDatabaseByIsbnController(oldIsbn).getTitle());
-        TextField isbnTextField = new TextField(oldIsbn);
-        TextField authorNameTextField = new TextField("Author name");
-        DatePicker datePicker = new DatePicker(LocalDate.now());
+            Dialog dialog = new Dialog<>();
+            dialog.setTitle("Update book");
+            dialog.setHeaderText("Update book");
+            DialogPane dialogPane = dialog.getDialogPane();
+            dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
-        dialogPane.setContent(new VBox(8,titleTextField,authorNameTextField,isbnTextField, datePicker));
-        dialog.showAndWait();
-        Date date = Date.valueOf(datePicker.getEditor().getText());
-        controller.onUpdateSelected(oldIsbn,isbnTextField.getText(),titleTextField.getText(),date,authorNameTextField.getText());
+            ObservableList<Integer> ratingOptions = FXCollections.observableArrayList();
+            ratingOptions.addAll(1,2,3,4,5);
+            ComboBox<Integer> ratingComboBox = new ComboBox<>(ratingOptions);
+            ratingComboBox.getSelectionModel().selectFirst();
+
+            ObservableList<Genres> genreOptions = FXCollections.observableArrayList();
+            genreOptions.addAll(Arrays.asList(Genres.values()));
+            ComboBox<Genres> genreComboBox = new ComboBox<>(genreOptions);
+            genreComboBox.getSelectionModel().selectFirst();
+
+            TextField titleTextField = new TextField(selectedBook.getTitle());
+            TextField isbnTextField = new TextField(oldIsbn);
+            TextField authorNameTextField = new TextField("Author name");
+            DatePicker datePicker = new DatePicker(LocalDate.now());
+
+            GridPane gridPane = initGridPane(titleTextField, isbnTextField, authorNameTextField, datePicker,genreComboBox,ratingComboBox);
+
+
+
+            VBox vBox =new VBox(8,gridPane);
+            vBox.setPadding(new Insets(20,20,20,20));
+
+            dialogPane.setContent(vBox);
+                Optional<ButtonType> result = dialog.showAndWait();
+                if (result.isPresent() && result.get() == ButtonType.OK){
+                    Date date = Date.valueOf(datePicker.getEditor().getText());
+                    controller.onUpdateSelected(oldIsbn,isbnTextField.getText(),titleTextField.getText(),date,authorNameTextField.getText(),ratingComboBox.getValue());
+                }
+    }
+
+    private GridPane initGridPane( TextField titleTextField, TextField isbnTextField, TextField authorNameTextField, DatePicker datePicker,ComboBox<Genres> genreComboBox,ComboBox<Integer> ratingComboBox) {
+        Label titleLabel = new Label("Title");
+        Label isbnLabel = new Label("Isbn");
+        Label authorLabel = new Label("Author");
+        Label dateLabel = new Label("Date");
+        Label ratingLabel = new Label("Rating");
+        Label genreLabel = new Label("Genre");
+
+        GridPane gridPane = new GridPane();
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+        gridPane.add(titleLabel,0,0);
+        gridPane.add(titleTextField,1,0);
+        gridPane.add(isbnLabel,0,1);
+        gridPane.add(isbnTextField,1,1);
+        gridPane.add(authorLabel,0,2);
+        gridPane.add(authorNameTextField,1,2);
+        gridPane.add(dateLabel,0,3);
+        gridPane.add(datePicker,1,3);
+
+        gridPane.add(genreLabel,0,4);
+        gridPane.add(genreComboBox,1,4);
+
+        gridPane.add(ratingLabel,0,5);
+        gridPane.add(ratingComboBox,1,5);
+
+        return gridPane;
     }
 
 

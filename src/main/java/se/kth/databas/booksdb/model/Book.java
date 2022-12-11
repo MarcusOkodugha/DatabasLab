@@ -18,10 +18,11 @@ public class Book {
     private String storyLine = "";
     private ArrayList<Author> authors;
     private ArrayList<Genre> genresList;
+    private int rating;
     // TODO:
     // Add authors, as a separate class(!), and corresponding methods, to your implementation
     // as well, i.e. "private ArrayList<Author> authors;"
-    public Book(int bookId, String isbn, String title, Date published) {
+    public Book(int bookId, String isbn, String title, Date published, int rating) {
         this.bookId = bookId;
         this.isbn = isbn;
         this.title = title;
@@ -29,9 +30,10 @@ public class Book {
         setValidISBN(isbn);
         authors = new ArrayList<>();
         genresList = new ArrayList<>();
+        this.rating = rating;
     }
-    public Book(String isbn, String title, Date published) {
-        this(-1, isbn, title, published);
+    public Book(String isbn, String title, Date published, int rating) {
+        this(-1, isbn, title, published,rating);
     }
 
     public void addGenre(Genre genre){
@@ -50,6 +52,10 @@ public class Book {
         }else {
             throw new IllegalArgumentException("ISBN not 9 numbers");
         }
+    }
+
+    public int getRating() {
+        return rating;
     }
 
 
@@ -92,6 +98,8 @@ public class Book {
                 ", published=" + published +
                 ", storyLine='" + storyLine + '\'' +
                 ", authors=" + authors +
+                ", genresList=" + genresList +
+                ", rating=" + rating +
                 '}';
     }
 }

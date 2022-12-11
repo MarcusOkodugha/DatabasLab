@@ -35,7 +35,7 @@ public class BooksDbImpl implements BooksDbInterface {
         String[] args = new String[2];
         args[0]="root";
         args[1]="root";
-        System.out.println(args.length);
+
 
         if (args.length != 2) {
             System.out.println("Usage: java JDBCTest <user> <password>");
@@ -78,34 +78,6 @@ public class BooksDbImpl implements BooksDbInterface {
 
     }
 
-//    @Override
-//    public List<Book> searchBooksByTitle(String searchTitle)
-//            throws BooksDbException {
-//        // mock implementation
-//        // NB! Your implementation should select the books matching
-//        // the search string via a query to a database (not load all books from db)
-//        List<Book> result = new ArrayList<>();
-//        searchTitle = searchTitle.toLowerCase();
-//        for (Book book : books) {
-//            if (book.getTitle().toLowerCase().contains(searchTitle)) {
-//                result.add(book);
-//            }
-//        }
-//        return result;
-//    }
-
-//    @Override
-//    public List<Book> searchBooksByIsbn(String serchIsbn) {
-//            //mock implementasino denna ska också göra en quary inte söka genom alla böker
-//        List<Book> result = new ArrayList<>();
-//        serchIsbn = serchIsbn.toLowerCase();
-//        for (Book book : books) {
-//            if (book.getIsbn().toLowerCase().contains(serchIsbn)) {
-//                result.add(book);
-//            }
-//        }
-//        return result;
-//    }
     @Override
     public List<Book> searchBooksByTitleQuery(String searchSting){
         String query="SELECT * FROM T_Book WHERE title LIKE"+"\'"+searchSting+"%\'";
@@ -115,7 +87,7 @@ public class BooksDbImpl implements BooksDbInterface {
             ResultSet rs = stmt.executeQuery(query);
             // Get the attribute values
             while (rs.next()) {
-                Book nextBook = new Book(rs.getInt("bookId"),rs.getString("isbn"),rs.getString("title"),rs.getDate("published"));
+                Book nextBook = new Book(rs.getInt("bookId"),rs.getString("isbn"),rs.getString("title"),rs.getDate("published"),rs.getInt("rating"));
                  result.add(nextBook);
             }
         } catch (SQLException e) {
@@ -133,7 +105,7 @@ public class BooksDbImpl implements BooksDbInterface {
             ResultSet rs = stmt.executeQuery(query);
             // Get the attribute values
             while (rs.next()) {
-                Book nextBook = new Book(rs.getInt("bookId"),rs.getString("isbn"),rs.getString("title"),rs.getDate("published"));
+                Book nextBook = new Book(rs.getInt("bookId"),rs.getString("isbn"),rs.getString("title"),rs.getDate("published"),rs.getInt("rating"));
                 result.add(nextBook);
             }
         } catch (SQLException e) {
@@ -197,7 +169,7 @@ public class BooksDbImpl implements BooksDbInterface {
                 ResultSet rs = stmt.executeQuery(query);
                 // Get the attribute values
                 while (rs.next()) {
-                    Book nextBook = new Book(rs.getInt("bookId"),rs.getString("isbn"),rs.getString("title"),rs.getDate("published"));
+                    Book nextBook = new Book(rs.getInt("bookId"),rs.getString("isbn"),rs.getString("title"),rs.getDate("published"),rs.getInt("rating"));
                     bookResults.add(nextBook);
                 }
             } catch (SQLException e) {
@@ -220,7 +192,8 @@ public class BooksDbImpl implements BooksDbInterface {
         String bookTitle= "\'"+book.getTitle()+"\'";
         String bookDate= "\'"+book.getPublished().toString()+"\'";
         String bookStoryLine= "\"test Story Line\"";
-          String sql= "INSERT into T_Book(isbn,title,published,storyLine)VALUES ("+bookIsbn+","+bookTitle+","+bookDate+","+bookStoryLine+");";
+        String rating= "\'"+book.getRating()+"\'";
+          String sql= "INSERT into T_Book(isbn,title,published,storyLine,rating)VALUES ("+bookIsbn+","+bookTitle+","+bookDate+","+bookStoryLine+","+rating+");";
 
         try (Statement stmt = con.createStatement()) {
             stmt.executeUpdate(sql);
@@ -278,7 +251,7 @@ public class BooksDbImpl implements BooksDbInterface {
             ResultSet rs = stmt.executeQuery(query);
             // Get the attribute values
             while (rs.next()) {
-                Book nextBook = new Book(rs.getInt("bookId"),rs.getString("isbn"),rs.getString("title"),rs.getDate("published"));
+                Book nextBook = new Book(rs.getInt("bookId"),rs.getString("isbn"),rs.getString("title"),rs.getDate("published"),rs.getInt("rating"));
                 arrayListOfBooks.add(nextBook);
             }
         }
@@ -293,26 +266,25 @@ public class BooksDbImpl implements BooksDbInterface {
             for (int c = 1; c <= ccount; c++) {
                 System.out.print(metaData.getColumnName(c) + "\t");
             }
-            System.out.println();
             while (rs.next()) {
                 for (int c = 1; c <= ccount; c++) {
                     System.out.print(rs.getObject(c) + "\t");
                 }
-                System.out.println();
+
             }
         }
     }
 
     public static final Book[] DATA = {
-            new Book(1, "123456789", "Databases Illuminated", new Date(2018, 1, 1)),
-            new Book(2, "234567891", "Dark Databases", new Date(1990, 1, 1)),
-            new Book(3, "456789012", "The buried giant", new Date(2000, 1, 1)),
-            new Book(4, "567890123", "Never let me go", new Date(2000, 1, 1)),
-            new Book(5, "678901234", "The remains of the day", new Date(2000, 1, 1)),
-            new Book(6, "234567890", "Alias Grace", new Date(2000, 1, 1)),
-            new Book(7, "345678911", "The handmaids tale", new Date(2010, 1, 1)),
-            new Book(8, "345678901", "Shuggie Bain", new Date(2020, 1, 1)),
-            new Book(9, "345678912", "Microserfs", new Date(2000, 1, 1)),
+            new Book(1, "123456789", "Databases Illuminated", new Date(2018, 1, 1),3),
+            new Book(2, "234567891", "Dark Databases", new Date(1990, 1, 1),4),
+            new Book(3, "456789012", "The buried giant", new Date(2000, 1, 1),2),
+            new Book(4, "567890123", "Never let me go", new Date(2000, 1, 1),4),
+            new Book(5, "678901234", "The remains of the day", new Date(2000, 1, 1),2),
+            new Book(6, "234567890", "Alias Grace", new Date(2000, 1, 1),1),
+            new Book(7, "345678911", "The handmaids tale", new Date(2010, 1, 1),3),
+            new Book(8, "345678901", "Shuggie Bain", new Date(2020, 1, 1),2),
+            new Book(9, "345678912", "Microserfs", new Date(2000, 1, 1),5),
     };
 
     public ArrayList getArrayListOfBooks() {
@@ -328,7 +300,6 @@ public class BooksDbImpl implements BooksDbInterface {
                 result = rs.getInt(1);
             }
         }
-        System.out.println("result "+result);
         return result;
     }
     public Book getBookFromDatabaseByIsbn(String isbn) throws SQLException {
@@ -337,7 +308,7 @@ public class BooksDbImpl implements BooksDbInterface {
         try (Statement stmt = con.createStatement()) {
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
-                nextBook = new Book(rs.getInt("bookId"),rs.getString("isbn"),rs.getString("title"),rs.getDate("published"));
+                nextBook = new Book(rs.getInt("bookId"),rs.getString("isbn"),rs.getString("title"),rs.getDate("published"),rs.getInt("rating"));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

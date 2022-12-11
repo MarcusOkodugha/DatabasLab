@@ -1,7 +1,7 @@
 package se.kth.databas.booksdb.model;
 
 import java.util.ArrayList;
-
+//todo ta bort klass
 public class Genre {
     private int genreId;
     private String genreName;

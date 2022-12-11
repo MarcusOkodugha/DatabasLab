@@ -8,6 +8,7 @@ import se.kth.databas.booksdb.model.Book;
 import se.kth.databas.booksdb.model.BooksDbException;
 import se.kth.databas.booksdb.model.BooksDbImpl;
 import se.kth.databas.booksdb.view.BooksPane;
+import se.kth.databas.booksdb.view.Controller;
 
 import java.sql.*;
 
@@ -27,6 +28,7 @@ public class Main extends Application {
         booksDb.connect("LibraryDB");//todo trun of auto connect
 //        testingMethod(booksDb);
 //        insertAllBooksFromDATA(booksDb);
+
 
         BooksPane root = new BooksPane(booksDb);
         Scene scene = new Scene(root, 800, 600);

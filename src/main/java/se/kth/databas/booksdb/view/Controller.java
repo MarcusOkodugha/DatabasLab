@@ -1,5 +1,6 @@
 package se.kth.databas.booksdb.view;
 
+import javafx.application.Platform;
 import se.kth.databas.booksdb.model.*;
 
 import java.sql.Date;
@@ -26,39 +27,44 @@ public class Controller {
         this.booksView = booksView;
     }
 
-    protected List<Book> onSearchSelected(String searchFor, SearchMode mode) {
-        try {
-            if (searchFor != null && searchFor.length() >= 1) {//todo vi ändra till minst en
-                List<Book> result = null;
-                switch (mode) {
-                    case Title:
-                        result = booksDb.searchBooksByTitleQuery(searchFor);
-                        break;
-                    case ISBN:
-                        result = booksDb.searchBooksByIsbnQuery(searchFor);
-                        break;
-                    case Author:
-                        result = booksDb.searchBookByAuthorQuery(searchFor);
-                        // ...
-                        break;
-                    default:
-                        result = new ArrayList<>();
-                }
-                if (result == null || result.isEmpty()) {
-                    booksView.showAlertAndWait(
-                            "No results found.", INFORMATION);
+    protected void onSearchSelected(String searchFor, SearchMode mode) {
+        new Thread(() -> {
+            try {
+                if (searchFor != null && searchFor.length() >= 1) {//todo vi ändra till minst en
+                    List<Book> result = null;
+                    switch (mode) {
+                        case Title:
+                            result = booksDb.searchBooksByTitleQuery(searchFor);
+                            break;
+                        case ISBN:
+                            result = booksDb.searchBooksByIsbnQuery(searchFor);
+                            break;
+                        case Author:
+                            result = booksDb.searchBookByAuthorQuery(searchFor);
+                            break;
+                        default:
+                            result = new ArrayList<>();
+                    }
+                    if (result == null || result.isEmpty()) {
+                        booksView.showAlertAndWait("No results found.", INFORMATION);
+                    } else {
+//                        booksView.displayBooks(result);
+                        List<Book> finalResult = result;
+                        Platform.runLater(()->{
+                            booksView.displayBooks(finalResult);
+                        });
+                    }
                 } else {
-                    booksView.displayBooks(result);
-                    return result;
+                    Platform.runLater(()->{
+                    booksView.showAlertAndWait("Enter a search string!", WARNING);
+                    });
                 }
-            } else {
-                booksView.showAlertAndWait(
-                        "Enter a search string!", WARNING);
+            } catch (Exception e) {
+                Platform.runLater(()->{
+                    booksView.showAlertAndWait("Database error.", ERROR);
+                });
             }
-        } catch (Exception e) {
-            booksView.showAlertAndWait("Database error.", ERROR);
-        }
-        return null;
+        }).start();
     }
 
     // TODO:
@@ -75,36 +81,92 @@ public class Controller {
         booksDb.connect("LibraryDB");
     }
 
-    protected void onAddSelected(String isbn, String title, Date published, String authorName) throws SQLException, BooksDbException {
-        if (!isbn.matches("[0-9]+"))throw new BooksDbException("Isbn is not numbers");
+    protected void onAddSelected(String isbn, String title, Date published, String authorName, int rating) throws SQLException, BooksDbException {
+        new Thread(() -> {
+            if (!isbn.matches("[0-9]+")) try {
+                throw new BooksDbException("Isbn is not numbers");
+            } catch (BooksDbException e) {
+                throw new RuntimeException(e);
+            }
+            Book book = new Book(isbn, title, published,rating);
+            Author author = new Author(authorName);
+            try {
+                booksDb.insertBook(book);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            booksDb.insertAuthor(author);
+            try {
+                author.setAuthorId(booksDb.getMaxAuthorIdFromDatabase());
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            author.addBook(book);
+            book.addAuthor(author);
+            Written written = new Written(author.getAuthorId(), book.getIsbn());
+            booksDb.insertWritten(written);
+            System.out.println(book);
+            System.out.println(author);
+            System.out.println(written);
+        }).start();
 
-        Book book =new Book(isbn,title,published);
-        Author author =new Author(authorName);
-        booksDb.insertBook(book);
-        booksDb.insertAuthor(author);
-        author.setAuthorId(booksDb.getMaxAuthorIdFromDatabase());
-        author.addBook(book);
-        book.addAuthor(author);
-
-        Written written = new Written(author.getAuthorId(),book.getIsbn());
-        booksDb.insertWritten(written);
-
-        System.out.println(book);
-        System.out.println(author);
-        System.out.println(written);
     }
 
     protected void onRemoveSelected(String isbn) throws SQLException {
-        booksDb.removeBookByIsbn(isbn);
-        booksDb.removeWrittenByIsbn(isbn);
+        new Thread(() -> {
+            try {
+                booksDb.removeBookByIsbn(isbn);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            try {
+                booksDb.removeWrittenByIsbn(isbn);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }).start();
     }
 
-    protected void onUpdateSelected(String oldIsbn, String newIsbn, String title, Date published, String authorName) throws SQLException, BooksDbException {
+    protected void onUpdateSelected(String oldIsbn, String newIsbn, String title, Date published, String authorName,int rating) throws SQLException, BooksDbException {
         if (!oldIsbn.isEmpty()){//todo trow exception
             onRemoveSelected(oldIsbn);
-            onAddSelected(newIsbn,title,published,authorName);
+            onAddSelected(newIsbn,title,published,authorName,rating);
         }
     }
+
+    public void getBookFromDatabaseByIsbnController(Controller controller,String isbn) throws SQLException {
+        new Thread(() -> {
+
+                try {
+                    booksView.setSelectedBook(booksDb.getBookFromDatabaseByIsbn(isbn));
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                Platform.runLater(()->{
+                    try {
+                        booksView.showUpdateDialog(controller,isbn);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    } catch (BooksDbException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+
+        }).start();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     //todo romve tests
     public void testShowBook() throws SQLException {
@@ -115,9 +177,6 @@ public class Controller {
         for (int i = 0; i < 9; i++) {
             booksDb.insertBook(DATA[i]);
         }
-    }
-    public Book getBookFromDatabaseByIsbnController(String isbn) throws SQLException {
-        return booksDb.getBookFromDatabaseByIsbn(isbn);
     }
 
 }

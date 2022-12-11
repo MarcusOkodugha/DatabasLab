@@ -309,12 +309,11 @@ public class BooksPane extends VBox {
     public void showRemoveDialog(Controller controller) throws SQLException {
         Dialog dialog = new Dialog<>();
         dialog.setTitle("Remove Book");
-        dialog.setHeaderText("Remove book");
+        dialog.setHeaderText("Remove book enter Isbn");
         DialogPane dialogPane = dialog.getDialogPane();
         dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
         TextField isbnTextField = new TextField("Isbn");
         dialogPane.setContent(new VBox(8,isbnTextField));
-        dialog.showAndWait();
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             controller.onSearchSelected(isbnTextField.getText(),SearchMode.ISBN);
@@ -366,8 +365,7 @@ public class BooksPane extends VBox {
 
             GridPane gridPane = initGridPane(titleTextField, isbnTextField, authorNameTextField, datePicker,genreComboBox,ratingComboBox);
 
-
-
+            
             VBox vBox =new VBox(8,gridPane);
             vBox.setPadding(new Insets(20,20,20,20));
 

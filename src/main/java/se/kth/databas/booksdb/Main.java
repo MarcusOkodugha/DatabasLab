@@ -12,7 +12,7 @@ import se.kth.databas.booksdb.view.Controller;
 
 import java.sql.*;
 
-import static se.kth.databas.booksdb.model.BooksDbImpl.DATA;
+
 
 /**
  * Application start up.

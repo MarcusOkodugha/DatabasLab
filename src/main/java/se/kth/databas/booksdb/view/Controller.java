@@ -124,6 +124,8 @@ public class Controller {
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
+            System.out.println("book removed!");
+
         }).start();
     }
 
@@ -174,7 +176,7 @@ public class Controller {
         booksView.displayBooks(booksDb.getArrayListOfBooks());
     }
     public void onTest2Selected() throws SQLException {
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 10; i++) {
             booksDb.insertBook(DATA[i]);
         }
     }

@@ -5,8 +5,7 @@ import java.util.ArrayList;
 
 /**
  * Representation of a book.
- * 
- * @author anderslm@kth.se
+ * Class has regular setters and getters for all the attributes (except authors and genresList)
  */
 public class Book {
     
@@ -18,9 +17,13 @@ public class Book {
     private ArrayList<Author> authors;
     private int rating;
     private Genre genre;
-    // TODO:
-    // Add authors, as a separate class(!), and corresponding methods, to your implementation
-    // as well, i.e. "private ArrayList<Author> authors;"
+    /**
+     * constructor taking in our attributes
+     * @param bookId
+     * @param isbn
+     * @param title
+     * @param published
+     */
     public Book(int bookId, String isbn, String title, Date published, int rating, Genre genre) {
         this.bookId = bookId;
         this.isbn = isbn;
@@ -31,11 +34,21 @@ public class Book {
         this.rating = rating;
         this.genre = genre;
     }
+     /**
+      * constructor called when the bookId isn't given, set to -1 by default
+      * @param isbn
+      * @param title
+      * @param published
+      * @pa
+      */
     public Book(String isbn, String title, Date published, int rating, Genre genre) {
         this(-1, isbn, title, published,rating, genre);
     }
 
-
+    /**
+     * before setting the isbn makes sure it is long enough
+     * @param isbn
+     */
     private void setValidISBN(String isbn){
         if(isbn.length() == 9){
             this.isbn = isbn;
@@ -48,7 +61,10 @@ public class Book {
         return rating;
     }
 
-
+    /**
+     *
+     * @return returns the id of the book, an integer
+     */
     public int getBookId() {
         return bookId;
     }
@@ -64,23 +80,41 @@ public class Book {
     public String getStoryLine() {
         return storyLine;
     }
+
+    /**
+      *
+      * @return returns the genre, an enum
+      */
     public Genre getGenre() {
         return genre;
     }
-
+    /**
+     * sets the attribute storyLine
+     * @param storyLine
+     */
     public void setStoryLine(String storyLine) {
         this.storyLine = storyLine;
     }
-
+    /**
+     *
+     * @return returns a clone of the author list
+     */
     public ArrayList<Author> getAuthors() {
         return (ArrayList<Author>) authors.clone();
     }
+     /**
+      * Before adding the author to the list check if it's not null
+      * @param author
+      */
     public void addAuthor(Author author){
         if (author!= null){
             authors.add(author);
         }
     }
-
+    /**
+     *
+     * @return returns a string in the format seen below, shows the values for the attributes
+     */
     @Override
     public String toString() {
         return "Book{" +

@@ -6,6 +6,7 @@
 package se.kth.databas.booksdb.model;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,8 +27,10 @@ public class BooksDbImpl implements BooksDbInterface {
 
     public BooksDbImpl() {
         books = Arrays.asList(DATA);
-    }
-
+    }    /**
+     * Representation of an author
+     * has the attributes authorId, authorName and a list of books written by the author
+     */
     @Override
     public boolean connect(String database) throws BooksDbException {
         // mock implementation
@@ -312,6 +315,7 @@ public class BooksDbImpl implements BooksDbInterface {
             new Book(7, "345678911", "The handmaids tale", new Date(2010, 1, 1),3,Genre.FICTION),
             new Book(8, "345678901", "Shuggie Bain", new Date(2020, 1, 1),2,Genre.DRAMA),
             new Book(9, "345678912", "Microserfs", new Date(2000, 1, 1),5,Genre.SCI_FI),
+            new Book(1, "111111111", "Lord of the rings", Date.valueOf(LocalDate.now()),5,Genre.FANTASY),
     };
 
     public ArrayList getArrayListOfBooks() {
@@ -342,4 +346,5 @@ public class BooksDbImpl implements BooksDbInterface {
         }
         return nextBook;
     }
+
 }

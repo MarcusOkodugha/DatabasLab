@@ -39,6 +39,8 @@ public class BooksDbImpl implements BooksDbInterface {
         args[0]="root";
         args[1]="root";
 
+        String superUser = "super@localhost";
+        String passWd = "Secure1Pass";
 
         if (args.length != 2) {
             System.out.println("Usage: java JDBCTest <user> <password>");
@@ -47,8 +49,7 @@ public class BooksDbImpl implements BooksDbInterface {
 
         String user = args[0]; // user name
         String pwd = args[1]; // password
-        System.out.println("user "+user);
-        System.out.println("pwd "+pwd);
+
         System.out.println(user + ", *********");
 //        String database = "Company"; // the name of the specific database
         String server
@@ -134,21 +135,29 @@ public class BooksDbImpl implements BooksDbInterface {
      * Since there is a many-to-many relationship between author and book it is shown by also using a Written list
      * Adds all author, book and writtenBy tuples to seperate lists
     */
+
     @Override
-    public List<Book> searchBookByAuthorQuery(String searchSting){
-        String query="SELECT * FROM T_Author WHERE authorName LIKE"+"\'"+searchSting+"%\'";
-
-        List<Author> authorResults =  new ArrayList<>();
-        addAuthorResults(query, authorResults);
-
-        List<Written> writtenResults = new ArrayList<>();
-        addWrittenResults(authorResults, writtenResults);
+    public List<Book> searchBookByAuthorQuery(String searchSting) throws SQLException {
+        String query ="SELECT T_Book.title,T_Book.isbn,T_Book.published,T_Book.genre, T_Book.rating FROM T_Author INNER JOIN T_Written ON  T_Author.authorId=T_Written.authorId INNER JOIN T_Book ON T_Written.isbn = T_Book.isbn WHERE T_Author.authorName LIKE ?";
 
         List<Book> bookResults= new ArrayList<>();
-        addBookResults(writtenResults,bookResults);
+        addJoinResults(query,bookResults,searchSting);
 
         return bookResults;
     }
+
+    private void addJoinResults(String query, List<Book> bookResults,String searchSting) throws SQLException {
+        PreparedStatement statement = con.prepareStatement(query);
+        statement.setString(1,searchSting+"%");
+        ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Book nextBook = new Book(rs.getString("isbn"), rs.getString("title"), rs.getDate("published"), rs.getInt("rating"), Genre.valueOf(rs.getString("genre")));
+                System.out.println(nextBook);
+                bookResults.add(nextBook);
+
+            }
+    }
+
     /**
      * adds the next author to the list, gets the daata from the table T_Author
     */

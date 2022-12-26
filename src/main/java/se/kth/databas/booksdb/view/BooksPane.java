@@ -80,7 +80,7 @@ public class BooksPane extends VBox {
         FlowPane bottomPane = new FlowPane();
         bottomPane.setHgap(10);
         bottomPane.setPadding(new Insets(10, 10, 10, 10));
-        bottomPane.getChildren().addAll(searchModeBox, searchField, searchButton,testButton,testButton2);
+        bottomPane.getChildren().addAll(searchModeBox, searchField, searchButton,testButton);
 
         BorderPane mainPane = new BorderPane();
         mainPane.setCenter(booksTable);

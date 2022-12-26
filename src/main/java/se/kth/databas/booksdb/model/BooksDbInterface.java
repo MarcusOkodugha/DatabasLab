@@ -33,7 +33,7 @@ public interface BooksDbInterface {
 
     public List<Book> searchBooksByIsbnQuery(String searchSting);
 
-    public List<Book> searchBookByAuthorQuery(String searchSting);
+    public List<Book> searchBookByAuthorQuery(String searchSting) throws SQLException;
 
 
     public void insertBook(Book book) throws SQLException;

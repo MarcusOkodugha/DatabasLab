@@ -18,8 +18,7 @@ public class JDBCTest {
 
         String user = args[0]; // user name
         String pwd = args[1]; // password
-        System.out.println("user "+user);
-        System.out.println("pwd "+pwd);
+
         System.out.println(user + ", *********");
         String database = "Company"; // the name of the specific database
         String server

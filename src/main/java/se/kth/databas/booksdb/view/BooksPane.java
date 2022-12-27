@@ -15,8 +15,11 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import se.kth.databas.booksdb.model.*;
+
+import static javafx.scene.control.Alert.AlertType.INFORMATION;
 
 
 /**
@@ -68,6 +71,8 @@ public class BooksPane extends VBox {
     protected void showAlertAndWait(String msg, Alert.AlertType type) {
         // types: INFORMATION, WARNING et c.
         Alert alert = new Alert(type, msg);
+        alert.setTitle(msg);
+        alert.setHeaderText(msg);
         alert.showAndWait();
     }
 
@@ -95,7 +100,6 @@ public class BooksPane extends VBox {
         booksTable = new TableView<>();
         booksTable.setEditable(false); // don't allow user updates (yet)
         booksTable.setPlaceholder(new Label("No rows to display"));
-
         // define columns
         TableColumn<Book, String> titleCol = new TableColumn<>("Title");
         TableColumn<Book, String> isbnCol = new TableColumn<>("ISBN");
@@ -116,6 +120,15 @@ public class BooksPane extends VBox {
 
         // associate the table view with the data
         booksTable.setItems(booksInTable);
+        booksTable.setOnMouseClicked(event -> {//event handler for row
+            Book selectedBook = booksTable.getSelectionModel().getSelectedItem();
+            if (selectedBook != null) {
+                setSelectedBook(selectedBook);
+
+            }
+        });
+
+
     }
 
     private void initSearchView(Controller controller) {
@@ -316,7 +329,16 @@ public class BooksPane extends VBox {
         }
     }
     public void showRemoveDialog(Controller controller) throws SQLException {
-        Dialog dialog = new Dialog<>();
+        if (selectedBook!=null){//remove selected book
+                controller.onSearchSelected(selectedBook.getIsbn(),SearchMode.ISBN,false);
+                if (!booksInTable.isEmpty()){
+                    controller.onRemoveSelected(selectedBook.getIsbn());
+                    showAlertAndWait(selectedBook.getTitle()+" has been removed",INFORMATION);
+                    return;
+                }
+        }
+
+        Dialog dialog = new Dialog<>();//remove by manual isbn input
         dialog.setTitle("Remove Book");
         dialog.setHeaderText("Remove book enter Isbn");
         DialogPane dialogPane = dialog.getDialogPane();

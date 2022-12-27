@@ -358,6 +358,16 @@ public class BooksPane extends VBox {
         }
     }
     public void showIsbnDialog(Controller controller) throws SQLException, BooksDbException {
+        if (selectedBook!=null){//remove selected book
+            controller.onSearchSelected(selectedBook.getIsbn(),SearchMode.ISBN,false);
+            if (!booksInTable.isEmpty()){
+                controller.getBookFromDatabaseByIsbnController(controller,selectedBook.getIsbn());
+                setSelectedBook(null);
+                return;
+            }
+        }
+
+
         Dialog dialog = new Dialog<>();
         dialog.setTitle("Update Book");
         dialog.setHeaderText("Enter isbn of the book you want to update");
@@ -376,6 +386,8 @@ public class BooksPane extends VBox {
         }
     }
         public void showUpdateDialog(Controller controller,String oldIsbn) throws SQLException, BooksDbException {
+            if (selectedBook==null)return;
+
             Dialog dialog = new Dialog<>();
             dialog.setTitle("Update book");
             dialog.setHeaderText("Update book");

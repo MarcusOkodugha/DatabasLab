@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29cf49d2-d410-47cd-96e9-acc5f247a89a" name="Changes" comment="innan lab2">
+    <list default="true" id="29cf49d2-d410-47cd-96e9-acc5f247a89a" name="Changes" comment="remove by selecting with mouse">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/view/BooksPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/view/BooksPane.java" afterDir="false" />
     </list>
@@ -115,7 +115,7 @@
       <workItem from="1672060056448" duration="325000" />
       <workItem from="1672094475649" duration="999000" />
       <workItem from="1672097252265" duration="1838000" />
-      <workItem from="1672148459118" duration="4576000" />
+      <workItem from="1672148459118" duration="5268000" />
     </task>
     <task id="LOCAL-00001" summary="lets go">
       <created>1669821712566</created>
@@ -236,7 +236,14 @@
       <option name="project" value="LOCAL" />
       <updated>1672094515351</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="remove by selecting with mouse">
+      <created>1672158188401</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1672158188402</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -269,7 +276,8 @@
     <MESSAGE value="tagit bort delat duplicate show" />
     <MESSAGE value="Färdig för inlämning" />
     <MESSAGE value="innan lab2" />
-    <option name="LAST_COMMIT_MESSAGE" value="innan lab2" />
+    <MESSAGE value="remove by selecting with mouse" />
+    <option name="LAST_COMMIT_MESSAGE" value="remove by selecting with mouse" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

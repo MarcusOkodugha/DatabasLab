@@ -1,5 +1,7 @@
 package se.kth.databas.booksdb.model;
 
+import org.bson.types.ObjectId;
+
 import java.sql.Date;
 import java.util.ArrayList;
 
@@ -9,23 +11,20 @@ import java.util.ArrayList;
  */
 public class Book {
     
-    private int bookId;
     private String isbn; // should check format
     private String title;
-    private Date published;
+    private java.util.Date published;
     private String storyLine = "";
     private ArrayList<Author> authors;
     private int rating;
     private Genre genre;
     /**
      * constructor taking in our attributes
-     * @param bookId
      * @param isbn
      * @param title
      * @param published
      */
-    public Book(int bookId, String isbn, String title, Date published, int rating, Genre genre) {
-        this.bookId = bookId;
+    public Book(String isbn, String title, java.util.Date published, int rating, Genre genre) {
         this.isbn = isbn;
         this.title = title;
         this.published = published;
@@ -41,16 +40,16 @@ public class Book {
       * @param published
       * @pa
       */
-    public Book(String isbn, String title, Date published, int rating, Genre genre) {
-        this(-1, isbn, title, published,rating, genre);
-    }
+//    public Book(String isbn, String title, Date published, int rating, Genre genre) {
+//        this(isbn, title, published,rating, genre);
+//    }
 
     /**
      * before setting the isbn makes sure it is long enough
      * @param isbn
      */
     private void setValidISBN(String isbn){
-        if(isbn.length() == 9){
+        if(isbn.length() == 9 && isbn.matches("[0-9]+")){
             this.isbn = isbn;
         }else {
             throw new IllegalArgumentException("ISBN not 9 numbers");
@@ -65,16 +64,14 @@ public class Book {
      *
      * @return returns the id of the book, an integer
      */
-    public int getBookId() {
-        return bookId;
-    }
+
     public String getIsbn() {
         return isbn;
     }
     public String getTitle() {
         return title;
     }
-    public Date getPublished() {
+    public java.util.Date getPublished() {
         return published;
     }
     public String getStoryLine() {
@@ -118,12 +115,10 @@ public class Book {
     @Override
     public String toString() {
         return "Book{" +
-                "bookId=" + bookId +
                 ", isbn='" + isbn + '\'' +
                 ", title='" + title + '\'' +
                 ", published=" + published +
                 ", storyLine='" + storyLine + '\'' +
-                ", authors=" + authors +
                 ", rating=" + rating +
                 ", genre=" + genre +
                 '}';

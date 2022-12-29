@@ -6,9 +6,7 @@ import se.kth.databas.booksdb.model.*;
 
 import java.sql.Date;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static javafx.scene.control.Alert.AlertType.*;
@@ -117,11 +115,7 @@ public class Controller {
     */
     protected void onRemoveSelected(String isbn) throws SQLException {
         new Thread(() -> {
-            try {
                 booksDb.onRemoveSelectedTransaction(isbn);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
         }).start();
     }
     /**
@@ -167,17 +161,22 @@ public class Controller {
     /**
      *Shows all books calls on model and view methods
     */
-    public void testShowBook() throws SQLException {
+    public void showAllBooksInDb() throws SQLException {
         booksDb.addAllBooksFromTableToArray();
         booksView.displayBooks(booksDb.getArrayListOfBooks());
+
     }
     /**
      *inserts static books to test
     */
-    public void onTest2Selected() throws SQLException {
+    public void insertAllStaticTestBooks() throws SQLException {
         for (int i = 0; i < 10; i++) {
             booksDb.insertBook(DATA[i]);
         }
+    }
+
+    public void onTestSelected(){
+        booksDb.onTestSelected();
     }
 
 }

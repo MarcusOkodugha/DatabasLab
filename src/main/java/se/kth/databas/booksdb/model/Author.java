@@ -9,10 +9,13 @@ import java.util.ArrayList;
  * has the attributes authorId, authorName and a list of books written by the author
  */
 public class Author {
-    private int authorId;
     private String authorName;
     private ArrayList<Book> books;
     private Date dob;
+
+     public ArrayList<Book> getBooks() {
+         return books;
+     }
 
      public Date getDob() {
          return dob;
@@ -28,7 +31,6 @@ public class Author {
          * @param authorName
          */
     public Author(int authorId, String authorName) {
-        this.authorId = authorId;
         this.authorName = authorName;
         this.books =  new ArrayList<>();
 
@@ -54,23 +56,17 @@ public class Author {
       *
       * @return returns the authorId,an integer
       */
-    public int getAuthorId() {
-        return authorId;
-    }
+
 
 
         /**
      * setter for authorName
      * @param authorName
          */
-    public void setAuthorId(int authorId) {
-        this.authorId = authorId;
-    }
 
 
  /**
          * setter for authorId
-         * @param authorId
       */    public void setAuthorName(String authorName) {
         this.authorName = authorName;
     }
@@ -85,11 +81,11 @@ public class Author {
      *
      * @return returns a string formatted in the way seen below
      */
-    @Override
-    public String toString() {
-        return "Author{" +
-                "authorId=" + authorId +
-                ", authorName='" + authorName + '\'';
-    }
-
-}
+     @Override
+     public String toString() {
+         return "Author{" +
+                 "authorName='" + authorName + '\'' +
+                 ", dob=" + dob +
+                 '}';
+     }
+ }

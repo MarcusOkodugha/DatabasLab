@@ -26,28 +26,16 @@ public interface BooksDbInterface {
      * @return true on successful connection.
      */
     public boolean connect(String database) throws BooksDbException;
-    
     public void disconnect() throws BooksDbException;
-
     public List<Book> searchBooksByTitleQuery(String searchSting);
-
     public List<Book> searchBooksByIsbnQuery(String searchSting);
-
     public List<Book> searchBookByAuthorQuery(String searchSting) throws SQLException;
-
-
     public void insertBook(Book book) throws SQLException;
     public void insertAuthor(Author author) throws SQLException;
-    public void insertWritten(Written written) throws SQLException;
-
-    public void removeBookByIsbn(String isbn) throws SQLException;
-
-    public void removeWrittenByIsbn(String isbn) throws SQLException;
     public void addAllBooksFromTableToArray() throws SQLException;
-    public int getMaxAuthorIdFromDatabase() throws SQLException;
     public ArrayList getArrayListOfBooks();
     public Book getBookFromDatabaseByIsbn(String isbn) throws SQLException;
-
     public void onAddSelectedTransaction(String isbn, String title, Date published, String authorString, int rating, Genre genre) throws SQLException;
-    public void onRemoveSelectedTransaction(String isbn) throws SQLException;
+    public void onRemoveSelectedTransaction(String isbn);
+    public void onTestSelected();
 }

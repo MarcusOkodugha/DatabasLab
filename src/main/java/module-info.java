@@ -8,4 +8,5 @@ module se.kth.anderslm.booksdb {
 
     requires java.sql;
     requires javafx.fxml;
+    requires mongo.java.driver;
 }

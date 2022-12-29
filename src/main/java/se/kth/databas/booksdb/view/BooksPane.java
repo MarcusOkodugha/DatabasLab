@@ -3,7 +3,6 @@ package se.kth.databas.booksdb.view;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +14,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import se.kth.databas.booksdb.model.*;
 
@@ -36,8 +34,9 @@ public class BooksPane extends VBox {
     private ComboBox<SearchMode> searchModeBox;
     private TextField searchField;
     private Button searchButton;
+    private Button showAllButton;
+    private Button donNotPressButton;
     private Button testButton;
-    private Button testButton2;
     private Book selectedBook;
 
     private MenuBar menuBar;
@@ -85,7 +84,7 @@ public class BooksPane extends VBox {
         FlowPane bottomPane = new FlowPane();
         bottomPane.setHgap(10);
         bottomPane.setPadding(new Insets(10, 10, 10, 10));
-        bottomPane.getChildren().addAll(searchModeBox, searchField, searchButton,testButton);
+        bottomPane.getChildren().addAll(searchModeBox, searchField, searchButton, showAllButton, donNotPressButton,testButton);
 
         BorderPane mainPane = new BorderPane();
         mainPane.setCenter(booksTable);
@@ -138,8 +137,9 @@ public class BooksPane extends VBox {
         searchModeBox.getItems().addAll(SearchMode.values());
         searchModeBox.setValue(SearchMode.Title);
         searchButton = new Button("Search");
-        testButton = new Button("Show All Books");
-        testButton2 = new Button("Dont press!!");
+        showAllButton = new Button("Show All Books");
+        donNotPressButton = new Button("Dont press!!");
+        testButton = new Button("Test");
 
         // event handling (dispatch to controller)
         searchButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -150,24 +150,30 @@ public class BooksPane extends VBox {
                 controller.onSearchSelected(searchFor, mode,true);
             }
         });
-        testButton.setOnAction(new EventHandler<ActionEvent>() {
+        showAllButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    controller.testShowBook();
+                    controller.showAllBooksInDb();
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
             }
         });
-        testButton2.setOnAction(new EventHandler<ActionEvent>() {
+        donNotPressButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    controller.onTest2Selected();
+                    controller.insertAllStaticTestBooks();
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
+            }
+        });
+        testButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                controller.onTestSelected();
             }
         });
     }
@@ -269,6 +275,7 @@ public class BooksPane extends VBox {
             @Override
             public void handle(ActionEvent event) {
                 try {
+                    System.out.println("update pressed");
                     showIsbnDialog(controller);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
@@ -360,7 +367,9 @@ public class BooksPane extends VBox {
     public void showIsbnDialog(Controller controller) throws SQLException, BooksDbException {
         if (selectedBook!=null){//remove selected book
             controller.onSearchSelected(selectedBook.getIsbn(),SearchMode.ISBN,false);
+            System.out.println(1);
             if (!booksInTable.isEmpty()){
+            System.out.println(2);
                 controller.getBookFromDatabaseByIsbnController(controller,selectedBook.getIsbn());
                 setSelectedBook(null);
                 return;

@@ -87,7 +87,7 @@ public class Controller {
      * When user presses connect this method is called on in view class
     */
     protected void onConnectSelected() throws BooksDbException {
-        booksDb.connect("LibraryDB");
+        booksDb.connect("lab2");
     }
     /**
      * When user wants to add a book this is called
@@ -98,13 +98,7 @@ public class Controller {
     */
     protected void onAddSelected(String isbn, String title, Date published, String authorString, int rating, Genre genre){
         new Thread(() -> {
-            try {
                 booksDb.onAddSelectedTransaction(isbn,title,published,authorString,rating,genre);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-
-
         }).start();
 
     }
@@ -113,7 +107,7 @@ public class Controller {
      * Removes the book from the database by using our instance booksDb
      * Removes writtenBy connected to that book (many-to-many between author and book)
     */
-    protected void onRemoveSelected(String isbn) throws SQLException {
+    protected void onRemoveSelected(String isbn){
         new Thread(() -> {
                 booksDb.onRemoveSelectedTransaction(isbn);
         }).start();
@@ -123,7 +117,7 @@ public class Controller {
      * Checks if the input isn't empty, and if it isn't first remove the book and then add it again but with the new info
      *
     */
-    protected void onUpdateSelected(String oldIsbn, String newIsbn, String title, Date published, String authorName,int rating,Genre genre) throws SQLException, BooksDbException {
+    protected void onUpdateSelected(String oldIsbn, String newIsbn, String title, Date published, String authorName,int rating,Genre genre){
         if (!oldIsbn.isEmpty()){
             onRemoveSelected(oldIsbn);
             Platform.runLater(()->{
@@ -134,26 +128,17 @@ public class Controller {
     /**
      * Gets one book only based on isbn and shows that info to the user when user wants to update the book
     */
-    public void getBookFromDatabaseByIsbnController(Controller controller,String isbn) throws SQLException {
+    public void getBookFromDatabaseByIsbnController(Controller controller,String isbn){
         new Thread(() -> {
 
-                try {
                     booksView.setSelectedBook(booksDb.getBookFromDatabaseByIsbn(isbn));
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
+
                 Platform.runLater(()->{
-                    try {
                         if (isbn.equals("Isbn") || isbn.equals("")){
                             booksView.showAlertAndWait("Invalid isbn", Alert.AlertType.WARNING);
                             return;
                         }
                         booksView.showUpdateDialog(controller,isbn);
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    } catch (BooksDbException e) {
-                        throw new RuntimeException(e);
-                    }
                 });
 
         }).start();

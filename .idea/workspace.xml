@@ -4,18 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29cf49d2-d410-47cd-96e9-acc5f247a89a" name="Changes" comment="update book  by selecting row with mouse">
-      <change afterPath="$PROJECT_DIR$/src/lib/mongo-java-driver-3.12.11.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/MongoDBMain.java" afterDir="false" />
+    <list default="true" id="29cf49d2-d410-47cd-96e9-acc5f247a89a" name="Changes" comment="fungerade kod innan koden städas up och alerts hanteras bettre">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/OldMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/Author.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/Author.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/Book.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/Book.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/JDBCTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/JDBCTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/MongoDBMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/MongoDBMain.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/BooksDbImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/BooksDbImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/BooksDbInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/BooksDbInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/testingClasses.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/model/testingClasses.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/view/BooksPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/view/BooksPane.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/view/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/kth/databas/booksdb/view/Controller.java" afterDir="false" />
     </list>
@@ -147,7 +141,7 @@
       <workItem from="1672097252265" duration="1838000" />
       <workItem from="1672148459118" duration="5716000" />
       <workItem from="1672160875049" duration="14912000" />
-      <workItem from="1672237171565" duration="21617000" />
+      <workItem from="1672237171565" duration="28683000" />
     </task>
     <task id="LOCAL-00001" summary="lets go">
       <created>1669821712566</created>
@@ -282,7 +276,14 @@
       <option name="project" value="LOCAL" />
       <updated>1672158960533</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="fungerade kod innan koden städas up och alerts hanteras bettre">
+      <created>1672314914065</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1672314914065</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -317,7 +318,8 @@
     <MESSAGE value="innan lab2" />
     <MESSAGE value="remove by selecting with mouse" />
     <MESSAGE value="update book  by selecting row with mouse" />
-    <option name="LAST_COMMIT_MESSAGE" value="update book  by selecting row with mouse" />
+    <MESSAGE value="fungerade kod innan koden städas up och alerts hanteras bettre" />
+    <option name="LAST_COMMIT_MESSAGE" value="fungerade kod innan koden städas up och alerts hanteras bettre" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -126,8 +126,6 @@ public class BooksPane extends VBox {
 
             }
         });
-
-
     }
 
     private void initSearchView(Controller controller) {
@@ -376,7 +374,6 @@ public class BooksPane extends VBox {
             }
         }
 
-
         Dialog dialog = new Dialog<>();
         dialog.setTitle("Update Book");
         dialog.setHeaderText("Enter isbn of the book you want to update");
@@ -394,7 +391,7 @@ public class BooksPane extends VBox {
             }
         }
     }
-        public void showUpdateDialog(Controller controller,String oldIsbn) throws SQLException, BooksDbException {
+        public void showUpdateDialog(Controller controller,String oldIsbn){
             if (selectedBook==null)return;
 
             Dialog dialog = new Dialog<>();
@@ -434,7 +431,6 @@ public class BooksPane extends VBox {
                     Date date = Date.valueOf(datePicker.getEditor().getText());
                     controller.onUpdateSelected(oldIsbn,isbnTextField.getText(),titleTextField.getText(),date,authorNameTextField.getText(),ratingComboBox.getValue(),genreComboBox.getValue());
                 }
-
 
 
     }

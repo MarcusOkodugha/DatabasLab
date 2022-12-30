@@ -6,23 +6,18 @@
 package se.kth.databas.booksdb.model;
 
 import com.mongodb.BasicDBObject;
+import com.mongodb.MongoException;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
 import org.bson.Document;
-import org.bson.conversions.Bson;
-import org.bson.types.BSONTimestamp;
-import org.bson.types.ObjectId;
 
-import java.sql.*;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import static com.mongodb.client.model.Filters.regex;
 
 /**
  * A mock implementation of the BooksDBInterface interface to demonstrate how to
@@ -49,16 +44,13 @@ public class BooksDbImpl implements BooksDbInterface {
     public boolean connect(String database) throws BooksDbException {
         Logger mongoLogger = Logger.getLogger( "org.mongodb.driver" );
         mongoLogger.setLevel(Level.SEVERE);
-        this.client = MongoClients.create("mongodb://localhost:27017");//auto connect on
-        this.db = client.getDatabase("lab2");
-
-        List<String> databaseNames = client.listDatabaseNames().into(new ArrayList<>());
-        if (databaseNames.isEmpty()) {
-            System.out.println("Not connected to MongoDB server");
+        try {
+            this.client = MongoClients.create("mongodb://localhost:27017");//auto connect on
+            this.db = client.getDatabase(database);
+            System.out.println("connected to "+database+" database");
             return true;
-        } else {
-            System.out.println("Connected to MongoDB server");
-            return false;
+        } catch (MongoException e) {
+            throw new BooksDbException("Error connecting to the database: " + e.getMessage(), e);
         }
     }
     /**
@@ -66,13 +58,11 @@ public class BooksDbImpl implements BooksDbInterface {
      *Disconnects from database
     */
     @Override
-    public void disconnect(){
-        client.close();
-        List<String> databaseNames = client.listDatabaseNames().into(new ArrayList<>());
-        if (databaseNames.isEmpty()) {
-            System.out.println("Not connected to MongoDB server");
-        } else {
-            System.out.println("Connected to MongoDB server");
+    public void disconnect() throws BooksDbException {
+        try {
+            client.close();
+        } catch (MongoException e) {
+            throw new BooksDbException("Error disconnecting from the database: " + e.getMessage(), e);
         }
     }
     /**
@@ -130,21 +120,17 @@ public class BooksDbImpl implements BooksDbInterface {
     */
 
     @Override
-    public List<Book> searchBookByAuthorQuery(String searchSting) throws SQLException {
+    public List<Book> searchBookByAuthorQuery(String searchString){
         MongoCollection col = db.getCollection("Author");
-
-
-        FindIterable foundBooks = col.find(Filters.eq("authorName", searchSting));
+        BasicDBObject regexQuery = new BasicDBObject();
+        regexQuery.put("authorName", new BasicDBObject("$regex", searchString+ ".*").append("$options", "i"));
+        FindIterable<Document> books =col.find(regexQuery);
         ArrayList result = new ArrayList<Book>();
-        for (MongoCursor<Document> cursor = foundBooks.iterator(); cursor.hasNext(); ) {
-            Document doc = cursor.next();
-            System.out.println(doc.get("authorName"));
-            System.out.println(doc.getList("books",Document.class));
+        for (Document doc:books) {
             for (Book b:convertDocListToBookList((doc.getList("books",Document.class)))) {
                 result.add(b);
             }
         }
-        System.out.println(result);
         return result;
     }
     private List<Book> convertDocListToBookList(List<Document> documentList){
@@ -156,7 +142,6 @@ public class BooksDbImpl implements BooksDbInterface {
                     doc.getDate("published"),
                     doc.getInteger("rating"),
                     Genre.valueOf(doc.getString("genre"))));
-            System.out.println(1);
         }
         return books;
     }
@@ -168,9 +153,7 @@ public class BooksDbImpl implements BooksDbInterface {
     */
     @Override
     public void insertBook(Book book) {
-        // Use the global client and db variables
         MongoCollection col = db.getCollection("Book");
-        // Create a new document from the Book object
         Document doc = new Document()
                 .append("isbn", book.getIsbn())
                 .append("title", book.getTitle())
@@ -178,18 +161,14 @@ public class BooksDbImpl implements BooksDbInterface {
                 .append("storyLine", "test story line")
                 .append("genre", book.getGenre().toString())
                 .append("rating", book.getRating());
-
-        // Insert the document into the collection
         col.insertOne(doc);
     }
-
     /**
      * SQL query to add an author row to our T_Author table
      * Author is represented as a class in java, use its getter methods to add the proper values to that specific object to the table
     */
     @Override
-    public void insertAuthor(Author author) throws SQLException {
-
+    public void insertAuthor(Author author){
         MongoCollection col = db.getCollection("Author");
         Document doc = new Document()
                 .append("authorName", author.getAuthorName())
@@ -260,19 +239,18 @@ public class BooksDbImpl implements BooksDbInterface {
      * Runs a query on T_Book table to retrieve a book from database based on ISBN
      * Returns the book object once it has all the corresponding attributes retrieved from the table
     */
-    public Book getBookFromDatabaseByIsbn(String isbn) {
+    public Book getBookFromDatabaseByIsbn(String isbn){
         Book nextBook = searchBooksByIsbnQuery(isbn).get(0);
         return nextBook;
     }
 
-    public void onAddSelectedTransaction(String isbn, String title, Date published, String authorString, int rating, Genre genre) throws SQLException {
+    public void onAddSelectedTransaction(String isbn, String title, Date published, String authorString, int rating, Genre genre) {
             Book book = new Book(isbn, title, published,rating, genre);
             List<String> list = new ArrayList<String>(Arrays.asList(authorString.split(",")));
             ArrayList<Author> authorArrayList =new ArrayList<>();
             for (String s:list) {
                 authorArrayList.add(new Author(s));
             }
-        System.out.println("XXXXXXX"+authorArrayList);
             insertBook(book);
             for (Author author:authorArrayList) {//todo om det fins tid gör så dob väljs med en datepickker
                 author.setDob(Date.valueOf(LocalDate.now()));
@@ -282,10 +260,9 @@ public class BooksDbImpl implements BooksDbInterface {
            }
     }
 
-
     public void onRemoveSelectedTransaction(String isbn){
        MongoCollection col= db.getCollection("Book");
-        System.out.println(col.deleteOne(Filters.eq("isbn", isbn)));
+        col.deleteOne(Filters.eq("isbn", isbn));
     }
 
     public void printAllBooksInDb() {

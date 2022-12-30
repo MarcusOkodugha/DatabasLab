@@ -29,13 +29,13 @@ public interface BooksDbInterface {
     public void disconnect() throws BooksDbException;
     public List<Book> searchBooksByTitleQuery(String searchSting);
     public List<Book> searchBooksByIsbnQuery(String searchSting);
-    public List<Book> searchBookByAuthorQuery(String searchSting) throws SQLException;
-    public void insertBook(Book book) throws SQLException;
-    public void insertAuthor(Author author) throws SQLException;
-    public void addAllBooksFromTableToArray() throws SQLException;
+    public List<Book> searchBookByAuthorQuery(String searchSting);
+    public void insertBook(Book book);
+    public void insertAuthor(Author author);
+    public void addAllBooksFromTableToArray();
     public ArrayList getArrayListOfBooks();
-    public Book getBookFromDatabaseByIsbn(String isbn) throws SQLException;
-    public void onAddSelectedTransaction(String isbn, String title, Date published, String authorString, int rating, Genre genre) throws SQLException;
+    public Book getBookFromDatabaseByIsbn(String isbn);
+    public void onAddSelectedTransaction(String isbn, String title, Date published, String authorString, int rating, Genre genre);
     public void onRemoveSelectedTransaction(String isbn);
     public void onTestSelected();
 }

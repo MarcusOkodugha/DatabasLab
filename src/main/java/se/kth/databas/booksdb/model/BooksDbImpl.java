@@ -1,16 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package se.kth.databas.booksdb.model;
-
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoException;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
 import org.bson.Document;
-
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -56,7 +49,7 @@ public class BooksDbImpl implements BooksDbInterface {
     /**
      *When clicking on disconnect button this method will run
      *Disconnects from database
-    */
+     */
     @Override
     public void disconnect() throws BooksDbException {
         try {
@@ -68,15 +61,15 @@ public class BooksDbImpl implements BooksDbInterface {
     /**
      * Returns a list of the books that were brought from the database
      * Creates a new book object for every book found in the database, adds it to the arraylist
-     * The query is done by selecting all matching titles from our database table T_Book
-    */
+     * Perform a Read operation from the database
+     */
 
     @Override
     public List<Book> searchBooksByTitleQuery(String searchString) {
         MongoCollection col = db.getCollection("Book");
         BasicDBObject regexQuery = new BasicDBObject();
         regexQuery.put("title", new BasicDBObject("$regex", searchString+ ".*").append("$options", "i"));
-         ArrayList result = new ArrayList<Book>();
+        ArrayList result = new ArrayList<Book>();
         FindIterable<Document> books =col.find(regexQuery);
         for (Document doc:books) {
             Book book = new Book(
@@ -87,37 +80,35 @@ public class BooksDbImpl implements BooksDbInterface {
                     Genre.valueOf(doc.getString("genre")));
             result.add(book);
         }
-            return result;
+        return result;
     }
     /**
      * Returns a list of all the brought books from the database
-     * The query selects all the matching books, matched after our search string which is the isbn
-    */
+     * Read operation is performed again we search through the documents in the database
+     */
     @Override
     public List<Book> searchBooksByIsbnQuery(String searchSting){
         MongoCollection col = db.getCollection("Book");
-         FindIterable foundBooks  = col.find(Filters.eq("isbn",searchSting));
-         ArrayList result = new ArrayList<Book>();
+        FindIterable foundBooks  = col.find(Filters.eq("isbn",searchSting));
+        ArrayList result = new ArrayList<Book>();
 
-         for (MongoCursor<Document> cursor = foundBooks.iterator(); cursor.hasNext();) {
-             Document doc = cursor.next();
-             Book book = new Book(
-                     doc.getString("isbn"),
-                     doc.getString("title"),
-                     doc.getDate("published"),
-                     doc.getInteger("rating"),
-                     Genre.valueOf(doc.getString("genre")));
-             result.add(book);
-           }
+        for (MongoCursor<Document> cursor = foundBooks.iterator(); cursor.hasNext();) {
+            Document doc = cursor.next();
+            Book book = new Book(
+                    doc.getString("isbn"),
+                    doc.getString("title"),
+                    doc.getDate("published"),
+                    doc.getInteger("rating"),
+                    Genre.valueOf(doc.getString("genre")));
+            result.add(book);
+        }
 
         return result;
     }
     /**
      * Returns a list of all the brought books from the database
-     * The query selects all the matching books, matched after our search string which is the author
-     * Since there is a many-to-many relationship between author and book it is shown by also using a Written list
-     * Adds all author, book and writtenBy tuples to seperate lists
-    */
+     * Performs a read operation from the database
+     */
 
     @Override
     public List<Book> searchBookByAuthorQuery(String searchString){
@@ -133,6 +124,13 @@ public class BooksDbImpl implements BooksDbInterface {
         }
         return result;
     }
+
+    /**
+     * This is a helper method, returns a list of books loops through documents
+     * converts a list of documents in the database to a list of those documents (books)
+     * @param documentList
+     * @return
+     */
     private List<Book> convertDocListToBookList(List<Document> documentList){
         List<Book> books= new ArrayList<>();
         for (Document doc:documentList) {
@@ -147,10 +145,8 @@ public class BooksDbImpl implements BooksDbInterface {
     }
 
     /**
-     * Insert query to insert a new book into the T_Book table with all its attributes
-     * Insert a book object from java, use the Book class getter methods to insert its values
-     * PreparedStatement is used to prevent SQl-injections
-    */
+     * Insert operation done on the database
+     */
     @Override
     public void insertBook(Book book) {
         MongoCollection col = db.getCollection("Book");
@@ -164,9 +160,8 @@ public class BooksDbImpl implements BooksDbInterface {
         col.insertOne(doc);
     }
     /**
-     * SQL query to add an author row to our T_Author table
-     * Author is represented as a class in java, use its getter methods to add the proper values to that specific object to the table
-    */
+     *  Insert operation done on the database
+     */
     @Override
     public void insertAuthor(Author author){
         MongoCollection col = db.getCollection("Author");
@@ -177,25 +172,30 @@ public class BooksDbImpl implements BooksDbInterface {
         col.insertOne(doc);
     }
 
+    /**
+     * Returns a list of documents, this is a helper method
+     * converts a list of books into a list of documents
+     * @param books
+     * @return
+     */
     private List<Document> convertBookListToDoc(ArrayList<Book> books){
         List<Document> documentList= new ArrayList<>();
         for (Book book:books) {
-        Document doc = new Document()
-                .append("isbn", book.getIsbn())
-                .append("title", book.getTitle())
-                .append("published", book.getPublished())
-                .append("storyLine", "test story line")
-                .append("genre", book.getGenre().toString())
-                .append("rating", book.getRating());
+            Document doc = new Document()
+                    .append("isbn", book.getIsbn())
+                    .append("title", book.getTitle())
+                    .append("published", book.getPublished())
+                    .append("storyLine", "test story line")
+                    .append("genre", book.getGenre().toString())
+                    .append("rating", book.getRating());
             documentList.add(doc);
         }
         return documentList;
     }
 
     /**
-     * Adds every single book from the table T_Book into an array using the query seen down below
-     * Creates book objects based on retrieved data and adds them to the list
-    */
+     * Adds all the books from the array to database
+     */
     @Override
     public void addAllBooksFromTableToArray() {
         MongoCollection col = db.getCollection("Book");
@@ -215,7 +215,7 @@ public class BooksDbImpl implements BooksDbInterface {
 
     /**
      * Static data, several books with all their attributes
-    */
+     */
     public static final Book[] DATA = {
             new Book( "123456789", "Databases Illuminated", new Date(2018, 1, 1),3,Genre.ACADEMIC),
             new Book( "234567891", "Dark Databases", new Date(1990, 1, 1),4,Genre.ACADEMIC),
@@ -229,42 +229,59 @@ public class BooksDbImpl implements BooksDbInterface {
             new Book( "111111111", "Lord of the rings", Date.valueOf(LocalDate.now()),5,Genre.FANTASY),
     };
     /**
-     * Returns a clone of the list containing all books from T_Book table
-    */
+     * Returns a clone of the list containing all books
+     */
     public ArrayList getArrayListOfBooks() {
         return (ArrayList) arrayListOfBooks.clone();
     }
 
     /**
      * Runs a query on T_Book table to retrieve a book from database based on ISBN
-     * Returns the book object once it has all the corresponding attributes retrieved from the table
-    */
+     * Returns a book object
+     */
     public Book getBookFromDatabaseByIsbn(String isbn){
         Book nextBook = searchBooksByIsbnQuery(isbn).get(0);
         return nextBook;
     }
 
+    /**
+     * When adding a book we both add the book but also author who wrote it
+     * @param isbn
+     * @param title
+     * @param published
+     * @param authorString
+     * @param rating
+     * @param genre
+     */
     public void onAddSelectedTransaction(String isbn, String title, Date published, String authorString, int rating, Genre genre) {
-            Book book = new Book(isbn, title, published,rating, genre);
-            List<String> list = new ArrayList<String>(Arrays.asList(authorString.split(",")));
-            ArrayList<Author> authorArrayList =new ArrayList<>();
-            for (String s:list) {
-                authorArrayList.add(new Author(s));
-            }
-            insertBook(book);
-            for (Author author:authorArrayList) {//todo om det fins tid gör så dob väljs med en datepickker
-                author.setDob(Date.valueOf(LocalDate.now()));
-                author.addBook(book);
-                insertAuthor(author);
-                book.addAuthor(author);
-           }
+        Book book = new Book(isbn, title, published,rating, genre);
+        List<String> list = new ArrayList<String>(Arrays.asList(authorString.split(",")));
+        ArrayList<Author> authorArrayList =new ArrayList<>();
+        for (String s:list) {
+            authorArrayList.add(new Author(s));
+        }
+        insertBook(book);
+        for (Author author:authorArrayList) {//todo om det fins tid gör så dob väljs med en datepickker
+            author.setDob(Date.valueOf(LocalDate.now()));
+            author.addBook(book);
+            insertAuthor(author);
+            book.addAuthor(author);
+        }
     }
 
+    /**
+     * Method to remove a book from the database based on its ISBN, deleted one document at a time
+     * @param isbn
+     */
     public void onRemoveSelectedTransaction(String isbn){
-       MongoCollection col= db.getCollection("Book");
+        MongoCollection col= db.getCollection("Book");
         col.deleteOne(Filters.eq("isbn", isbn));
     }
 
+    /**
+     * Gets the collection of books from the database,loops through all of them and prints them out
+     * Just a test method not needed for functionality
+     */
     public void printAllBooksInDb() {
         MongoCollection col = db.getCollection("Book");
         FindIterable<Document> books =col.find();
